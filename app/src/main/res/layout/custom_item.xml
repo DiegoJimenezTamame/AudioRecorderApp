@@ -10,16 +10,16 @@
         android:id="@+id/imgRec"
         android:src="@drawable/ic_recordings"
         android:layout_width="60dp"
-        android:layout_height="60dp">
+        android:layout_height="60dp"
+        android:contentDescription="">
     </ImageView>
     <TextView
         android:id="@+id/txtName"
-        android:clickable="true"
         android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:textSize="24sp"
         android:textColor="@color/white"
-        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
         android:singleLine="true"
         android:ellipsize="marquee"
         android:marqueeRepeatLimit="marquee_forever"

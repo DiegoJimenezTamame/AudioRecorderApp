@@ -12,6 +12,7 @@ import at.wifi.swdev.audiorecorderapp.Adapters.ViewPagerAdapter;
 import at.wifi.swdev.audiorecorderapp.Fragments.RecorderFragment;
 import at.wifi.swdev.audiorecorderapp.Fragments.RecordingsFragment;
 
+
 public class MainActivity extends AppCompatActivity {
 
     private Toolbar toolbar;

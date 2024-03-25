@@ -52,4 +52,11 @@ public class RecAdapter extends RecyclerView.Adapter<RecViewHolder> {
     public int getItemCount() {
         return fileList.size();
     }
+
+    public void removeItem(int position){
+        fileList.remove(position);
+        notifyItemRemoved(position);
+        notifyItemRangeChanged(position, fileList.size());
+    }
+
 }

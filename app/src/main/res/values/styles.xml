@@ -7,4 +7,11 @@
 
     <style name="AppTheme">AppTheme</style>
 
+    <style name="CustomAlertDialogStyle" parent="Theme.AppCompat.Dialog.Alert">
+        <!-- Background color -->
+        <item name="android:background">@color/black</item>
+        <!-- Text color -->
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

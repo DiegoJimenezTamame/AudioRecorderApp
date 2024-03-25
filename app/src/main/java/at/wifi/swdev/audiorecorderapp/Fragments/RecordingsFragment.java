@@ -1,8 +1,6 @@
 package at.wifi.swdev.audiorecorderapp.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +8,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.viewmodel.CreationExtras;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -21,10 +18,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.wifi.swdev.audiorecorderapp.Adapters.RecAdapter;
+import at.wifi.swdev.audiorecorderapp.FileOptionsDialog;
 import at.wifi.swdev.audiorecorderapp.OnSelectListener;
 import at.wifi.swdev.audiorecorderapp.R;
 
-public class RecordingsFragment extends Fragment implements OnSelectListener {
+public class RecordingsFragment extends Fragment implements OnSelectListener{
 
     private RecyclerView recyclerView;
     private List<File> fileList;
@@ -43,7 +41,9 @@ public class RecordingsFragment extends Fragment implements OnSelectListener {
         // Initialize context
         context = getContext();
         // Initialize path
-        path = new File(context.getFilesDir(), "/AudioRecorderAlt");
+        if (context != null) {
+            path = new File(context.getFilesDir(), "/AudioRecorderApp");
+        }
 
         displayFiles();
         return  view;
@@ -79,18 +79,25 @@ public class RecordingsFragment extends Fragment implements OnSelectListener {
         return super.getDefaultViewModelCreationExtras();
     }
 
-    @Override
+    /*@Override
     public void OnSelected(File file) {
 
-        Uri uri = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".provider", file);
+        Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(uri, "audio/x-wav");
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        getContext().startActivity(intent);
+        context.startActivity(intent);
 
-        FileDetailsDialogFragment dialogFragment = FileDetailsDialogFragment.newInstance(file);
+        /*FileDetailsDialogFragment dialogFragment = FileDetailsDialogFragment.newInstance(file);
         dialogFragment.show(getChildFragmentManager(), "file_details_dialog");
+    } */
+
+    @Override
+    public void OnSelected(File file) {
+        FileOptionsDialog dialog = new FileOptionsDialog(context, file);
+        dialog.show();
     }
+
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {

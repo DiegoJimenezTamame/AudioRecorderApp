@@ -1,17 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    android:orientation="vertical"
-    android:weightSum="4">
+    android:orientation="vertical">
+
+    <!-- Top Chronometer and status text -->
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3">
+
+        <!-- Status text -->
         <TextView
             android:id="@+id/textRecStatus"
             android:gravity="center"
@@ -21,6 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         </TextView>
+
+        <!-- Chronometer -->
         <Chronometer
             android:id="@+id/timeRec"
             android:textColor="@color/white"
@@ -31,14 +37,27 @@
             android:layout_height="wrap_content">
         </Chronometer>
 
+        <!-- VisualizerView to fill the remaining space -->
+        <at.wifi.swdev.audiorecorderapp.WaveformVisualizerView
+            android:id="@+id/visualizer_view_recorder"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:visibility="gone"
+            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"/>
 
     </LinearLayout>
+
+    <!-- Bottom Record button -->
     <LinearLayout
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
+
         <ImageButton
             android:id="@+id/btnRec"
             android:background="@drawable/round_btn"
@@ -49,8 +68,7 @@
             android:layout_width="70dp"
             android:layout_height="70dp">
         </ImageButton>
+
     </LinearLayout>
-
-
 
 </LinearLayout>

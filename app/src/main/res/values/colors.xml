@@ -20,5 +20,7 @@
     <!-- Green style gradient-->
     <color name="greenstartcolor">#b4fa51</color>
     <color name="greenendcolor">#78cb29</color>
+
     <color name="redcolor">#CE0B0B</color>
+    <color name="darkgrey">#13161D</color>
 </resources>

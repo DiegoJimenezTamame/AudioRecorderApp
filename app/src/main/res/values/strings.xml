@@ -2,5 +2,9 @@
     <string name="app_name">Audio Recorder</string>
     <string name="recorder">Recorder</string>
     <string name="recordings">Recordings</string>
-    <string name="recording">Recording...</string>
+    <string name="recording">Recording</string>
+    <string name="play">Play</string>
+    <string name="delete">Delete</string>
+    <string name="rename">Rename</string>
+    <string name="trim">Trim</string>
 </resources>

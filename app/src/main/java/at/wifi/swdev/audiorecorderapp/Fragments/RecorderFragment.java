@@ -3,6 +3,7 @@ package at.wifi.swdev.audiorecorderapp.Fragments;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,15 +21,6 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-/*import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
-
-Dependency: implementation ("com.karumi:dexter:6.2.3")
-*/
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -36,6 +28,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import at.wifi.swdev.audiorecorderapp.R;
+import at.wifi.swdev.audiorecorderapp.WaveformVisualizerView;
 
 
 public class RecorderFragment extends Fragment {
@@ -47,6 +40,8 @@ public class RecorderFragment extends Fragment {
 
     private static String fileName;
     private MediaRecorder recorder;
+    //private Visualizer visualizer;
+    private WaveformVisualizerView visualizerView;
     boolean isRecording = false;
 
     private Context context;
@@ -68,6 +63,7 @@ public class RecorderFragment extends Fragment {
         btnRec = view.findViewById(R.id.btnRec);
         txtRecStatus = view.findViewById(R.id.textRecStatus);
         timeRec = view.findViewById(R.id.timeRec);
+        visualizerView = view.findViewById(R.id.visualizer_view_recorder);
 
         isRecording = false;
 
@@ -81,7 +77,7 @@ public class RecorderFragment extends Fragment {
         String date = format.format(new Date());
 
         // Initialize path
-        path = new File(context.getFilesDir(), "/AudioRecorderAlt");
+        path = new File(context.getFilesDir(), "/AudioRecorderApp");
 
         fileName = path + "/recording_" + date + ".amr";
         if(!path.exists()){
@@ -107,7 +103,7 @@ public class RecorderFragment extends Fragment {
                 timeRec.setBase(SystemClock.elapsedRealtime());
                 timeRec.stop();
                 txtRecStatus.setText("");
-                btnRec.setImageResource(R.drawable.ic_record);
+                btnRec.setImageResource(R.drawable.ic_microphone);
                 isRecording = false;
             }
         });
@@ -158,6 +154,8 @@ public class RecorderFragment extends Fragment {
         recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
         recorder.setOutputFile(fileName);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        visualizerView.setVisibility(View.VISIBLE);
+        visualizerView.setMediaPlayer(new MediaPlayer());
 
         try {
             recorder.prepare();
@@ -171,5 +169,45 @@ public class RecorderFragment extends Fragment {
         recorder.stop();
         recorder.release();
         recorder = null;
+        visualizerView.release();
+        visualizerView.setVisibility(View.GONE);
     }
+
+
+    /*private void startVisualizer() {
+        MediaPlayer mediaPlayer = new MediaPlayer();
+        mediaPlayer.setAudioSessionId(Objects.requireNonNull(recorder.getActiveRecordingConfiguration()).getClientAudioSessionId());
+
+        visualizer = new Visualizer(mediaPlayer.getAudioSessionId());
+        visualizer.setEnabled(true);
+        visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
+        visualizer.setDataCaptureListener(
+                new Visualizer.OnDataCaptureListener() {
+                    public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {
+                        // Draw your waveform here using the bytes array
+                    }
+                    public void onFftDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {
+                    }
+                }, Visualizer.getMaxCaptureRate() / 2, true, false);
+        visualizer.setEnabled(true);
+
+        mediaPlayer.release();
+    }
+    private void stopVisualizer() {
+        if (visualizer != null) {
+            visualizer.setEnabled(false);
+            visualizer.release();
+            visualizer = null;
+        }
+    }*/
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (visualizerView != null) {
+            visualizerView.release();
+            visualizerView = null;
+        }
+    }
+
 }

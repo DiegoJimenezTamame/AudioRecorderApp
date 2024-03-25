@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/background_dark">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="UselessParent">
+
+        <!-- Play Button -->
+        <ImageButton
+            android:id="@+id/play_button"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/play_button_background"
+            android:contentDescription="@string/play"
+            android:scaleType="center"
+            android:src="@drawable/play_pause_button_selector" />
+
+        <!-- Visualizer View -->
+       <at.wifi.swdev.audiorecorderapp.WaveformVisualizerView
+            android:id="@+id/visualizer_view_dialog"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="0dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_toEndOf="@+id/play_button"
+            android:background="@color/black"
+            android:visibility="visible"/>
+        <!-- <com.chibde.audiovisualizer.visualizer.BarVisualizer
+        android:id="@+id/visualizer"
+        android:layout_width="match_parent"
+        android:layout_height="250dp"/>-->
+
+
+        <!-- Container Layout for Delete, Rename, and Trim Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/play_button"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true">
+
+            <!-- Delete Button -->
+            <ImageButton
+                android:id="@+id/delete_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/delete_button_background"
+                android:src="@drawable/delete_file_icon"
+                android:text="@string/delete" />
+
+            <!-- Rename Button -->
+            <ImageButton
+                android:id="@+id/rename_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blueendcolor"
+                android:src="@drawable/rename_button_icon"
+                android:text="@string/rename" />
+
+            <!-- Trim Button -->
+            <ImageButton
+                android:id="@+id/trim_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/blueendcolor"
+                android:src="@drawable/trim_button_icon"
+                android:text="@string/trim" />
+            <!-- Trim Button -->
+            <ImageButton
+                android:id="@+id/share_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/greenendcolor"
+                android:src="@drawable/share_button_icon"
+                android:text="@string/trim" />
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>
