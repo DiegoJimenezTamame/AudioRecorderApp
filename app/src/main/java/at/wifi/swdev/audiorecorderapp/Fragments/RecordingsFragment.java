@@ -19,7 +19,7 @@ import java.util.List;
 
 import at.wifi.swdev.audiorecorderapp.Adapters.RecAdapter;
 import at.wifi.swdev.audiorecorderapp.FileOptionsDialog;
-import at.wifi.swdev.audiorecorderapp.OnSelectListener;
+import at.wifi.swdev.audiorecorderapp.Listeners.OnSelectListener;
 import at.wifi.swdev.audiorecorderapp.R;
 
 public class RecordingsFragment extends Fragment implements OnSelectListener{

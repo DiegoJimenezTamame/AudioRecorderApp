@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new RecorderFragment(), "Recorder");
         viewPagerAdapter.addFragment(new RecordingsFragment(), "Recordings");
+        viewPagerAdapter.addFragment(new RecordingsFragment(), "Drumpad");
         viewPager.setAdapter(viewPagerAdapter);
 
     }

@@ -12,15 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.io.File;
 import java.util.List;
 
-import at.wifi.swdev.audiorecorderapp.OnSelectListener;
+import at.wifi.swdev.audiorecorderapp.Listeners.OnSelectListener;
 import at.wifi.swdev.audiorecorderapp.R;
 import at.wifi.swdev.audiorecorderapp.RecViewHolder;
 
 public class RecAdapter extends RecyclerView.Adapter<RecViewHolder> {
 
-    private Context context;
-    private List<File> fileList;
-    private OnSelectListener listener;
+    private final Context context;
+    private final List<File> fileList;
+    private final OnSelectListener listener;
 
     public RecAdapter(Context context, List<File> fileList, OnSelectListener listener) {
         this.context = context;
