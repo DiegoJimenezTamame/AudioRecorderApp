@@ -7,4 +7,8 @@
     <string name="delete">Delete</string>
     <string name="rename">Rename</string>
     <string name="trim">Trim</string>
+    <string name="looping">Looping</string>
+    <string name="edit">Edit</string>
+    <string name="loop">Loop</string>
+    <string name="recordinglive">Recording...</string>
 </resources>

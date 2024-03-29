@@ -9,6 +9,8 @@ import android.media.audiofx.Visualizer;
 import android.util.AttributeSet;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 public class WaveformVisualizerView extends View {
 
     private static final int MAX_AMPLITUDE = 32767; // Maximum amplitude value for 16-bit audio
@@ -22,6 +24,13 @@ public class WaveformVisualizerView extends View {
         init();
     }
 
+    public void setVisualizer(Visualizer visualizer) {
+        if (visualizer != null) {
+            this.visualizer = visualizer;
+            visualizer.setEnabled(true);
+            setupVisualizer();
+        }
+    }
     private void init() {
         paint = new Paint();
         paint.setColor(0xFF47F9FE);
@@ -44,8 +53,7 @@ public class WaveformVisualizerView extends View {
             visualizer.setScalingMode(Visualizer.SCALING_MODE_NORMALIZED);
 
             // Set smoothing to get smoother waveform visualization
-            //visualizer.setScalingMode(Visualizer.SCALING_MODE_AS_PLAYED);
-
+            visualizer.setScalingMode(Visualizer.SCALING_MODE_AS_PLAYED);
             visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {
                 @Override
                 public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
@@ -64,9 +72,14 @@ public class WaveformVisualizerView extends View {
             release();
         }
     }
+    // Method to update waveform data
+    public void setWaveform(byte[] waveform) {
+        this.waveform = waveform;
+        invalidate(); // Trigger redraw
+    }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
 
         if (waveform != null) {

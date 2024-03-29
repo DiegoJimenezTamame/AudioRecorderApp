@@ -9,6 +9,16 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <ToggleButton
+        android:id="@+id/toggle_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit"
+        android:checked="false"
+        android:layout_gravity="end|top"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"/>
+
     <!--<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -24,115 +34,116 @@
         android:orientation="horizontal"
         android:gravity="center"
         android:paddingTop="10dp">
-        <Button
+        <!-- android:src="@drawable/ic_drumpad_pad"-->
+        <ImageButton
+            android:id="@+id/button1"
             android:background="@drawable/blue_button"
-            android:onClick="playSound1"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
-        <Button
-            android:layout_marginLeft="5dp"
-            android:background="@drawable/blue_button"
-            android:onClick="playSound2"
-            android:longClickable="true"
-            android:layout_width="100dp"
-            android:layout_height="100dp">
-        </Button>
-        <Button
+        </ImageButton>
+        <ImageButton
+            android:id="@+id/button2"
             android:layout_marginStart="5dp"
             android:background="@drawable/blue_button"
-            android:onClick="playSound3"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
+        </ImageButton>
+        <ImageButton
+            android:id="@+id/button3"
+            android:layout_marginStart="5dp"
+            android:background="@drawable/blue_button"
+            android:longClickable="true"
+            android:layout_width="100dp"
+            android:layout_height="100dp">
+        </ImageButton>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+        <ImageButton
+            android:id="@+id/button4"
             android:background="@drawable/purple_button"
-            android:onClick="playSound4"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
-        <Button
+        </ImageButton>
+        <ImageButton
+            android:id="@+id/button5"
             android:layout_marginStart="5dp"
             android:background="@drawable/orange_button"
-            android:onClick="playSound5"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
-        <Button
+        </ImageButton>
+        <ImageButton
+            android:id="@+id/button6"
             android:layout_marginStart="5dp"
             android:background="@drawable/pink_button"
-            android:onClick="playSound6"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
+        </ImageButton>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+        <ImageButton
+            android:id="@+id/button7"
             android:background="@drawable/green_button"
-            android:onClick="playSound7"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
-        <Button
+        </ImageButton>
+        <ImageButton
+            android:id="@+id/button8"
             android:layout_marginStart="5dp"
             android:background="@drawable/green_button"
-            android:onClick="playSound8"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
-        <Button
+        </ImageButton>
+        <ImageButton
+            android:id="@+id/button9"
             android:layout_marginStart="5dp"
             android:background="@drawable/pink_button"
-            android:onClick="playSound9"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
+        </ImageButton>
     </LinearLayout>
     <LinearLayout
         android:layout_marginTop="5dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+        <ImageButton
+            android:id="@+id/button10"
             android:background="@drawable/green_button"
-            android:onClick="playSound00"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
-        <Button
+        </ImageButton>
+        <ImageButton
+            android:id="@+id/button11"
             android:layout_marginStart="5dp"
             android:background="@drawable/green_button"
-            android:onClick="playSound00"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
-        <Button
+        </ImageButton>
+        <ImageButton
+            android:id="@+id/button12"
             android:layout_marginStart="5dp"
             android:background="@drawable/pink_button"
-            android:onClick="playSound00"
             android:longClickable="true"
             android:layout_width="100dp"
             android:layout_height="100dp">
-        </Button>
+        </ImageButton>
     </LinearLayout>
 
 

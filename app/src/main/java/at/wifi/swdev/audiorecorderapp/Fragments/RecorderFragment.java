@@ -1,5 +1,4 @@
 package at.wifi.swdev.audiorecorderapp.Fragments;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -90,7 +89,7 @@ public class RecorderFragment extends Fragment {
                     startRecording();
                     timeRec.setBase(SystemClock.elapsedRealtime());
                     timeRec.start();
-                    txtRecStatus.setText("Recording...");
+                    txtRecStatus.setText(R.string.recordinglive);
                     btnRec.setImageResource(R.drawable.ic_stop);
                     isRecording = true;
                 } catch (Exception e){
@@ -174,32 +173,6 @@ public class RecorderFragment extends Fragment {
     }
 
 
-    /*private void startVisualizer() {
-        MediaPlayer mediaPlayer = new MediaPlayer();
-        mediaPlayer.setAudioSessionId(Objects.requireNonNull(recorder.getActiveRecordingConfiguration()).getClientAudioSessionId());
-
-        visualizer = new Visualizer(mediaPlayer.getAudioSessionId());
-        visualizer.setEnabled(true);
-        visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
-        visualizer.setDataCaptureListener(
-                new Visualizer.OnDataCaptureListener() {
-                    public void onWaveFormDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {
-                        // Draw your waveform here using the bytes array
-                    }
-                    public void onFftDataCapture(Visualizer visualizer, byte[] bytes, int samplingRate) {
-                    }
-                }, Visualizer.getMaxCaptureRate() / 2, true, false);
-        visualizer.setEnabled(true);
-
-        mediaPlayer.release();
-    }
-    private void stopVisualizer() {
-        if (visualizer != null) {
-            visualizer.setEnabled(false);
-            visualizer.release();
-            visualizer = null;
-        }
-    }*/
 
     @Override
     public void onDestroy() {

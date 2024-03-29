@@ -9,6 +9,7 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 
 import at.wifi.swdev.audiorecorderapp.Adapters.ViewPagerAdapter;
+import at.wifi.swdev.audiorecorderapp.Fragments.DrumpadFragment;
 import at.wifi.swdev.audiorecorderapp.Fragments.RecorderFragment;
 import at.wifi.swdev.audiorecorderapp.Fragments.RecordingsFragment;
 
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new RecorderFragment(), "Recorder");
         viewPagerAdapter.addFragment(new RecordingsFragment(), "Recordings");
-        viewPagerAdapter.addFragment(new RecordingsFragment(), "Drumpad");
+        viewPagerAdapter.addFragment(new DrumpadFragment(), "Drumpad");
         viewPager.setAdapter(viewPagerAdapter);
 
     }
