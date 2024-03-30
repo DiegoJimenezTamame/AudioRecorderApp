@@ -7,22 +7,25 @@
     android:background="@android:color/background_dark"
     android:padding="16dp">
 
-    <!-- Text label for looping -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/loop"
-        android:textColor="@android:color/white"
-        android:textSize="16sp"
-        android:gravity="center_vertical" />
-
     <!-- Toggle button for looping -->
-    <ToggleButton
-        android:id="@+id/loop_toggle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/looping"
+    <ImageButton
+        android:id="@+id/loop_image_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_loop_on"
+        android:background="@color/greenendcolor"
+        android:padding="8dp"
+        android:contentDescription="@string/looping"
         android:checked="false" />
+
+    <ImageButton
+        android:id="@+id/color_palette"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_color_palette"
+        android:background="@color/orangestartcolor"
+        android:padding="8dp"
+        android:contentDescription="Change button color" />
 
     <!-- Add other UI elements here for trimming, loading file, playback direction, etc. -->
 

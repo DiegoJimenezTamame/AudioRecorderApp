@@ -13,11 +13,19 @@
         android:id="@+id/toggle_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/edit"
+        android:textOn="@string/edit_enabled"
+        android:textOff="@string/edit_disabled"
+        android:textSize="10sp"
+        android:textColor="#FFFFFF"
         android:checked="false"
-        android:layout_gravity="end|top"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="16dp"/>
+        android:layout_gravity="start|top"
+        android:layout_marginStart="45dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/toggle_background_selector"
+        android:backgroundTintMode="src_in"
+        android:contentDescription="Toggle button for enabling editing"/>
+
+
 
     <!--<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
@@ -37,9 +45,9 @@
         <!-- android:src="@drawable/ic_drumpad_pad"-->
         <ImageButton
             android:id="@+id/button1"
-            android:background="@drawable/blue_button"
             android:layout_width="100dp"
-            android:layout_height="100dp">
+            android:layout_height="100dp"
+            android:background="@drawable/blue_button">
         </ImageButton>
         <ImageButton
             android:id="@+id/button2"

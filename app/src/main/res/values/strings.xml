@@ -11,4 +11,6 @@
     <string name="edit">Edit</string>
     <string name="loop">Loop</string>
     <string name="recordinglive">Recording...</string>
+    <string name="edit_enabled">Edit enabled</string>
+    <string name="edit_disabled">Edit disabled</string>
 </resources>
