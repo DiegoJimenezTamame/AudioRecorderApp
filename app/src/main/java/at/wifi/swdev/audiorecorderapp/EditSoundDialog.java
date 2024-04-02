@@ -81,31 +81,18 @@ public class EditSoundDialog extends DialogFragment {
         });
 
         builder.setView(dialogView)
-                .setPositiveButton("Apply", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        applyChanges();
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        dismiss();
-                    }
-                });
+                .setPositiveButton("Apply", (dialog, id) -> applyChanges())
+                .setNegativeButton("Cancel", (dialog, id) -> dismiss());
         return builder.create();
     }
 
     private void showColorSelectionDialog() {
         ColorSelectionDialog dialog = new ColorSelectionDialog();
-        dialog.setOnColorSelectedListener(new ColorSelectionDialog.OnColorSelectedListener() {
-            @Override
-            public void onColorSelected(String color) {
-                ImageButton updateColor = getView().findViewById(R.id.color_list_view);
-                int drawableResId = getColorDrawableResource(color);
-                if (drawableResId != 0) {
-                    updateColor.setImageResource(drawableResId);
-                }
+        dialog.setOnColorSelectedListener(color -> {
+            ImageButton updateColor = getView().findViewById(R.id.color_list_view);
+            int drawableResId = getColorDrawableResource(color);
+            if (drawableResId != 0) {
+                updateColor.setImageResource(drawableResId);
             }
         });
         dialog.show(getChildFragmentManager(), "ColorSelectionDialog");
@@ -139,12 +126,9 @@ public class EditSoundDialog extends DialogFragment {
         for (int i = 0; i < soundFiles.size(); i++) {
             soundNames[i] = soundFiles.get(i).getName();
         }
-        builder.setItems(soundNames, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Load selected sound
-                // Implement your logic here to load the selected sound into SoundPool
-            }
+        builder.setItems(soundNames, (dialog, which) -> {
+            // Load selected sound
+            // Implement your logic here to load the selected sound into SoundPool
         });
         builder.setNegativeButton("Cancel", null);
         AlertDialog dialog = builder.create();

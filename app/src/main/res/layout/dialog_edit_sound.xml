@@ -26,7 +26,7 @@
         android:src="@drawable/ic_color_palette"
         android:background="@color/orangestartcolor"
         android:padding="8dp"
-        android:contentDescription="Change button color"
+        android:contentDescription="@string/change_button_color"
         style="@style/DialogButtonStyle"/>
 
     <ImageButton
@@ -36,7 +36,7 @@
         android:src="@drawable/ic_load_sound"
         android:background="@color/bluestartcolor"
         android:padding="8dp"
-        android:contentDescription="Load sound"
+        android:contentDescription="@string/load_sound"
         style="@style/DialogButtonStyle"/>
 
     <!-- Add other UI elements here for trimming, loading file, playback direction, etc. -->

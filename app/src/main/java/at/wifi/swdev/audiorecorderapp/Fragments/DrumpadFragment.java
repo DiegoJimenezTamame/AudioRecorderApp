@@ -195,7 +195,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             // Get the looping state for the selected button
             boolean isLooping = (buttonIndex == soundIndex) && loopingStates[soundIndex];
             // Use the looping state for the corresponding button
-            int loop = loopingStates[soundIndex] ? -1 : 0; // -1 for loop, 0 for no loop
+            int isooping = loopingStates[soundIndex] ? -1 : 0; // -1 for loop, 0 for no loop
 
             // Play sound continuously if looping is enabled and button is pressed
             if (isLooping) {

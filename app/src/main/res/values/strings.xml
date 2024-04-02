@@ -13,4 +13,6 @@
     <string name="recordinglive">Recording...</string>
     <string name="edit_enabled">Edit enabled</string>
     <string name="edit_disabled">Edit disabled</string>
+    <string name="change_button_color">Change button color</string>
+    <string name="load_sound">Load sound</string>
 </resources>
