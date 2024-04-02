@@ -16,7 +16,8 @@
         android:background="@color/greenendcolor"
         android:padding="8dp"
         android:contentDescription="@string/looping"
-        android:checked="false" />
+        android:checked="false"
+        style="@style/DialogButtonStyle"/>
 
     <ImageButton
         android:id="@+id/color_palette"
@@ -25,7 +26,18 @@
         android:src="@drawable/ic_color_palette"
         android:background="@color/orangestartcolor"
         android:padding="8dp"
-        android:contentDescription="Change button color" />
+        android:contentDescription="Change button color"
+        style="@style/DialogButtonStyle"/>
+
+    <ImageButton
+        android:id="@+id/load_sound_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_load_sound"
+        android:background="@color/bluestartcolor"
+        android:padding="8dp"
+        android:contentDescription="Load sound"
+        style="@style/DialogButtonStyle"/>
 
     <!-- Add other UI elements here for trimming, loading file, playback direction, etc. -->
 

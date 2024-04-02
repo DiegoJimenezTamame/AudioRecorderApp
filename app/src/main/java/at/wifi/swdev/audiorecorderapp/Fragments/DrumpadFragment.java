@@ -13,8 +13,14 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.viewmodel.CreationExtras;
+
+import java.io.File;
+import java.io.FileDescriptor;
+import java.io.FileInputStream;
+import java.io.IOException;
 
 import at.wifi.swdev.audiorecorderapp.EditSoundDialog;
 import at.wifi.swdev.audiorecorderapp.R;
@@ -24,7 +30,9 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
 
         private SoundPool soundPool;
         private int[] soundIds = new int[12];
+        private int longClickedButtonIndex = -1; // Initialize with an invalid index
         private SoundPool.Builder soundPoolBuilder;
+        private boolean defaultSoundsLoaded = false;
         private ImageButton[] buttons = new ImageButton[12];
         private boolean[] loopingStates = new boolean[12];
         private int buttonIndex = 0; // Default value
@@ -54,6 +62,24 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
 
             return view;
         }
+
+        public void loadSound(String filePath) {
+        // Check if SoundPool is initialized
+        if (soundPool == null) {
+            setupSoundPool();
+        }
+        // Load sound into SoundPool
+            try {
+                File file = new File(filePath);
+                if (file.exists()) {
+                    soundIds[0] = soundPool.load(file.getAbsolutePath(), 1);
+                } else {
+                    Log.e("DrumpadFragment", "File does not exist: " + filePath);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
 
         private void setupSoundPool(){
             AudioAttributes audioAttributes = null;
@@ -121,22 +147,24 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             buttons[11] = view.findViewById(R.id.button12);
 
             // Set long click listeners for each button
-            for (ImageButton button : buttons) {
-                button.setOnLongClickListener(v -> {
+            for (int i = 0; i < buttons.length; i++) {
+                final int soundIndex = i;
+                buttons[i].setOnLongClickListener(v -> {
                     if (toggleButton.isChecked()) {
-                        showOptionsDialog();
+                        // Store the index of the long-clicked button
+                        currentButtonIndex = soundIndex; // Update the currentButtonIndex
+                        showOptionsDialog(soundIndex); // Pass the index
                         return true; // Consume the long click event
                     }
                     return false;
                 });
             }
         }
-
     private void setupButtonLongClickListeners() {
         for (ImageButton button : buttons) {
             button.setOnLongClickListener(v -> {
                 if (toggleButton.isChecked()) {
-                    showOptionsDialog();
+                    showOptionsDialog(buttonIndex);
                     return true; // Consume the long click event
                 }
                 return false;
@@ -165,12 +193,12 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
     private void playSound(int soundIndex) {
         if (soundIndex >= 0 && soundIndex < soundIds.length) {
             // Get the looping state for the selected button
-            boolean looping = (buttonIndex == soundIndex) && loopingStates[soundIndex];
+            boolean isLooping = (buttonIndex == soundIndex) && loopingStates[soundIndex];
             // Use the looping state for the corresponding button
             int loop = loopingStates[soundIndex] ? -1 : 0; // -1 for loop, 0 for no loop
 
             // Play sound continuously if looping is enabled and button is pressed
-            if (looping) {
+            if (isLooping) {
                 // Start playing the sound
                 soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, -1, 1f);
             } else {
@@ -180,24 +208,27 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private void showOptionsDialog() {
-            //update currentButtonindex when showing the dialog
-        if (buttonIndex >= 0 && buttonIndex < loopingStates.length){
-            //update currentButtonIndex when showing the dialog
+    private void showOptionsDialog(int buttonIndex) {
+        if (buttonIndex >= 0 && buttonIndex < loopingStates.length) {
+            // Update currentButtonIndex when showing the dialog
             EditSoundDialog dialog = new EditSoundDialog();
+            dialog.setLongClickedButtonIndex(buttonIndex);
             dialog.show(getChildFragmentManager(), "OptionsDialogFragment");
             dialog.setLooping(loopingStates[currentButtonIndex]);
-        } else {// Handle the case where buttonIndex is invalid
+        } else {
             Log.e("DrumpadFragment", "Invalid buttonIndex: " + buttonIndex);
         }
     }
     // Method to update looping state for a specific button
-    public void updateLooping(boolean isLooping) {
-        loopingStates[currentButtonIndex] = isLooping;
+    public void updateLooping(int buttonIndex, boolean isLooping) {
+        loopingStates[buttonIndex] = isLooping;
     }
     public int getCurrentButtonIndex(){
             return currentButtonIndex;
     }
+
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();

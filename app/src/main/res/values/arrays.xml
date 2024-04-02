@@ -18,4 +18,18 @@
         <item>15</item>
         <item>16</item>
     </string-array>
+    <string-array name="color_options">
+        <item>Blue</item>
+        <item>Green</item>
+        <item>Pink</item>
+        <item>Orange</item>
+        <item>Purple</item>
+    </string-array>
+    <string-array name="color_resources">
+        <item>@drawable/blue_button</item>
+        <item>@drawable/green_button</item>
+        <item>@drawable/pink_button</item>
+        <item>@drawable/orange_button</item>
+        <item>@drawable/purple_button</item>
+    </string-array>
 </resources>

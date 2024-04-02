@@ -73,6 +73,7 @@ public class RecordingsFragment extends Fragment implements OnSelectListener{
         return arrayList;
     }
 
+
     @NonNull
     @Override
     public CreationExtras getDefaultViewModelCreationExtras() {
