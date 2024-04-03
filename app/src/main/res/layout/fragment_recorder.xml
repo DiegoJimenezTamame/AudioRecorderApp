@@ -39,7 +39,7 @@
 
         <!-- VisualizerView to fill the remaining space -->
         <at.wifi.swdev.audiorecorderapp.WaveformVisualizerView
-            android:id="@+id/visualizer_view_recorder"
+            android:id="@+id/waveformVisualizer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
@@ -54,22 +54,44 @@
 
     <!-- Bottom Record button -->
     <LinearLayout
-        android:orientation="vertical"
-        android:gravity="center_horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/btnRec"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_margin="10dp"
+            android:layout_marginTop="16dp"
             android:background="@drawable/round_btn"
             android:clickable="true"
-            android:src="@drawable/ic_microphone"
             android:scaleType="center"
-            android:layout_margin="10dp"
+            android:src="@drawable/ic_microphone"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <ImageButton
+            android:id="@+id/play_button"
             android:layout_width="70dp"
-            android:layout_height="70dp">
-        </ImageButton>
+            android:layout_height="70dp"
+            android:layout_below="@id/btnRec"
+            android:layout_margin="10dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/round_btn"
+            android:clickable="true"
+            android:scaleType="center"
+            android:src="@drawable/play_button_icon"
+            android:text="Play"
+            android:visibility="gone" />
 
     </LinearLayout>
 

@@ -1,4 +1,5 @@
 package at.wifi.swdev.audiorecorderapp.Fragments;
+
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -27,24 +28,23 @@ import java.util.Date;
 import java.util.Locale;
 
 import at.wifi.swdev.audiorecorderapp.R;
-import at.wifi.swdev.audiorecorderapp.WaveformVisualizerView;
+import android.media.audiofx.Visualizer;
 
 
 public class RecorderFragment extends Fragment {
 
     View view;
     ImageButton btnRec;
+    ImageButton btnPlay;
     TextView txtRecStatus;
     Chronometer timeRec;
-
-    private static String fileName;
+    private Visualizer visualizer;
+    private File path;
+    private MediaPlayer mediaPlayer;
     private MediaRecorder recorder;
-    //private Visualizer visualizer;
-    private WaveformVisualizerView visualizerView;
     boolean isRecording = false;
-
+    private static String fileName;
     private Context context;
-    private File path; // Moved declaration here
 
     private static final int REQUEST_PERMISSION_CODE = 1001;
     private static final String[] PERMISSIONS = {
@@ -60,9 +60,9 @@ public class RecorderFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_recorder, container, false);
 
         btnRec = view.findViewById(R.id.btnRec);
+        btnPlay = view.findViewById(R.id.play_button);
         txtRecStatus = view.findViewById(R.id.textRecStatus);
         timeRec = view.findViewById(R.id.timeRec);
-        visualizerView = view.findViewById(R.id.visualizer_view_recorder);
 
         isRecording = false;
 
@@ -79,12 +79,12 @@ public class RecorderFragment extends Fragment {
         path = new File(context.getFilesDir(), "/AudioRecorderApp");
 
         fileName = path + "/recording_" + date + ".amr";
-        if(!path.exists()){
+        if (!path.exists()) {
             path.mkdirs();
         }
 
         btnRec.setOnClickListener(view -> {
-            if (!isRecording){
+            if (!isRecording) {
                 try {
                     startRecording();
                     timeRec.setBase(SystemClock.elapsedRealtime());
@@ -92,18 +92,49 @@ public class RecorderFragment extends Fragment {
                     txtRecStatus.setText(R.string.recordinglive);
                     btnRec.setImageResource(R.drawable.ic_stop);
                     isRecording = true;
-                } catch (Exception e){
+                } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Recording failed", Toast.LENGTH_SHORT).show();
                 }
-            }
-            else {
+            } else {
                 stopRecording();
                 timeRec.setBase(SystemClock.elapsedRealtime());
                 timeRec.stop();
                 txtRecStatus.setText("");
                 btnRec.setImageResource(R.drawable.ic_microphone);
                 isRecording = false;
+            }
+        });
+
+        btnPlay.setOnClickListener(view -> {
+            if (mediaPlayer == null) {
+                // Create and start MediaPlayer
+                mediaPlayer = new MediaPlayer();
+                try {
+                    mediaPlayer.setDataSource(fileName);
+                    mediaPlayer.prepare();
+                    mediaPlayer.start();
+                    Toast.makeText(getContext(), "Playing recorded audio", Toast.LENGTH_SHORT).show();
+                    // Change icon to Pause
+                    btnPlay.setImageResource(R.drawable.pause_button_icon);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getContext(), "Failed to play recorded audio", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                if (mediaPlayer.isPlaying()) {
+                    // Pause MediaPlayer
+                    mediaPlayer.pause();
+                    // Change icon to Play
+                    btnPlay.setImageResource(R.drawable.play_button_icon);
+                    Toast.makeText(getContext(), "Playback paused", Toast.LENGTH_SHORT).show();
+                } else {
+                    // Resume MediaPlayer
+                    mediaPlayer.start();
+                    // Change icon to Pause
+                    btnPlay.setImageResource(R.drawable.pause_button_icon);
+                    Toast.makeText(getContext(), "Playback resumed", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -147,14 +178,13 @@ public class RecorderFragment extends Fragment {
         }
     }
 
-    private void startRecording(){
+    private void startRecording() {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
         recorder.setOutputFile(fileName);
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        visualizerView.setVisibility(View.VISIBLE);
-        visualizerView.setMediaPlayer(new MediaPlayer());
+        btnPlay.setVisibility(View.GONE);
 
         try {
             recorder.prepare();
@@ -164,23 +194,28 @@ public class RecorderFragment extends Fragment {
         recorder.start();
     }
 
-    private void stopRecording(){
-        recorder.stop();
-        recorder.release();
-        recorder = null;
-        visualizerView.release();
-        visualizerView.setVisibility(View.GONE);
+    private void stopRecording() {
+        if (recorder != null) {
+            recorder.stop();
+            recorder.release();
+            recorder = null;
+        }
+        btnPlay.setVisibility(View.VISIBLE);
     }
 
+    // Define a method to update the visualizer view
+    private void updateVisualizer(byte[] waveform) {
+        // Process the waveform data and update the visualizer view
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        btnPlay.setVisibility(View.GONE);
+    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (visualizerView != null) {
-            visualizerView.release();
-            visualizerView = null;
-        }
     }
-
 }

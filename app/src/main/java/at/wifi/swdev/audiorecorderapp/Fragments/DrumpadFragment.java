@@ -1,5 +1,6 @@
 package at.wifi.swdev.audiorecorderapp.Fragments;
 
+import android.annotation.SuppressLint;
 import android.media.AudioAttributes;
 import android.media.SoundPool;
 import android.os.Build;
@@ -13,14 +14,10 @@ import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.viewmodel.CreationExtras;
 
 import java.io.File;
-import java.io.FileDescriptor;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 import at.wifi.swdev.audiorecorderapp.EditSoundDialog;
 import at.wifi.swdev.audiorecorderapp.R;
@@ -81,6 +78,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             }
     }
 
+        @SuppressLint("ObsoleteSdkInt")
         private void setupSoundPool(){
             AudioAttributes audioAttributes = null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
@@ -126,7 +124,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
 
             // Set click listeners for each button
             for (int i = 0; i < buttons.length; i++) {
-                final int soundIndex = i;
+                int soundIndex = i;
                 buttons[i].setOnClickListener((View v) -> playSound(soundIndex));
             }
         }
@@ -148,7 +146,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
 
             // Set long click listeners for each button
             for (int i = 0; i < buttons.length; i++) {
-                final int soundIndex = i;
+                int soundIndex = i;
                 buttons[i].setOnLongClickListener(v -> {
                     if (toggleButton.isChecked()) {
                         // Store the index of the long-clicked button
@@ -160,6 +158,19 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
                 });
             }
         }
+
+    private void setupToggleButton(View view) {
+        toggleButton = view.findViewById(R.id.toggle_button);
+        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (isChecked) {
+                // Enable long click listeners
+                setupButtonLongClickListeners(); // Call the method directly
+            } else {
+                // Disable long click listeners
+                removeToggleLongClickListeners();
+            }
+        });
+    }
     private void setupButtonLongClickListeners() {
         for (ImageButton button : buttons) {
             button.setOnLongClickListener(v -> {
@@ -171,20 +182,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             });
         }
     }
-    private void setupToggleButton(View view) {
-        toggleButton = view.findViewById(R.id.toggle_button);
-        toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                // Enable long click listeners
-                setupButtonLongClickListeners(); // Call the method directly
-            } else {
-                // Disable long click listeners
-                removeButtonLongClickListeners();
-            }
-        });
-    }
-
-    private void removeButtonLongClickListeners() {
+    private void removeToggleLongClickListeners() {
         for (ImageButton button : buttons) {
             button.setOnLongClickListener(null);
         }

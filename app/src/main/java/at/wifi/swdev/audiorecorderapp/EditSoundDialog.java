@@ -44,7 +44,8 @@ public class EditSoundDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_edit_sound, null);
 
         // Find the toggle button for looping
-        ImageButton loopImageButton = dialogView.findViewById(R.id.loop_image_button);
+        ImageButton loopImageButton;
+        loopImageButton = dialogView.findViewById(R.id.loop_image_button);
         updateLoopingButtonState(loopImageButton);
         loopImageButton.setOnClickListener(v -> {
             // Toggle the state
@@ -115,26 +116,6 @@ public class EditSoundDialog extends DialogFragment {
         }
     }
 
-    private void showLoadSoundDialog() {
-        // Retrieve available sounds from internal storage
-        ArrayList<File> soundFiles = getSoundFilesFromInternalStorage();
-
-        // Create and show dialog
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext());
-        builder.setTitle("Select Sound");
-        String[] soundNames = new String[soundFiles.size()];
-        for (int i = 0; i < soundFiles.size(); i++) {
-            soundNames[i] = soundFiles.get(i).getName();
-        }
-        builder.setItems(soundNames, (dialog, which) -> {
-            // Load selected sound
-            // Implement your logic here to load the selected sound into SoundPool
-        });
-        builder.setNegativeButton("Cancel", null);
-        AlertDialog dialog = builder.create();
-        dialog.show();
-    }
-
     // Method to retrieve available sounds from internal storage
     private ArrayList<File> getSoundFilesFromInternalStorage() {
         ArrayList<File> soundFiles = new ArrayList<>();
@@ -148,7 +129,7 @@ public class EditSoundDialog extends DialogFragment {
             if (files != null) {
                 // Iterate through the files
                 for (File file : files) {
-                    // Check if the file is a sound file (you can use any criteria to identify sound files)
+                    // Check if the file is a sound file
                     if (file.getName().toLowerCase().endsWith(".amr")) {
                         soundFiles.add(file);
                     }
