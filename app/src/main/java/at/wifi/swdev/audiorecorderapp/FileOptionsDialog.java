@@ -14,7 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
+
+import com.chibde.visualizer.LineBarVisualizer;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +26,7 @@ public class FileOptionsDialog extends Dialog {
 
     private File selectedFile;
     private MediaPlayer mediaPlayer;
-    private WaveformVisualizerView visualizerView;
+    private LineBarVisualizer lineBarVisualizer;
     private boolean isPlaying = false;
 
 
@@ -46,8 +49,8 @@ public class FileOptionsDialog extends Dialog {
             e.printStackTrace();
         }
 
-        visualizerView = findViewById(R.id.visualizer_view_dialog);
-        visualizerView.setMediaPlayer(mediaPlayer);
+        lineBarVisualizer= findViewById(R.id.visualizer_view_dialog);
+        lineBarVisualizer.setPlayer(mediaPlayer);
 
         ImageButton playButton = findViewById(R.id.play_button);
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -56,11 +59,13 @@ public class FileOptionsDialog extends Dialog {
                 if (isPlaying) {
                     mediaPlayer.pause();
                     playButton.setImageResource(R.drawable.play_button_icon);
-                    visualizerView.setVisibility(View.GONE);
+                    lineBarVisualizer.setVisibility(View.GONE);
                 } else {
                     mediaPlayer.start();
                     playButton.setImageResource(R.drawable.pause_button_icon);
-                    visualizerView.setVisibility(View.VISIBLE);
+                    lineBarVisualizer.setVisibility(View.VISIBLE);
+                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.purple_700)); // Set color as per your requirement
+                    lineBarVisualizer.setDensity(1000); // Set density as per your requirement
                 }
                 isPlaying = !isPlaying;
             }
@@ -72,7 +77,7 @@ public class FileOptionsDialog extends Dialog {
             public void onCompletion(MediaPlayer mp) {
                 // Reset icon to play button and hide visualizer
                 playButton.setImageResource(R.drawable.play_button_icon);
-                visualizerView.setVisibility(View.GONE);
+                lineBarVisualizer.setVisibility(View.GONE);
                 isPlaying = false; // Reset play state
             }
         });
@@ -142,6 +147,7 @@ public class FileOptionsDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 // Implement file trimming functionality here
+                // TODO: IMPLEMENT TRIM LOGIC HERE
                 dismiss();
             }
         });
@@ -151,6 +157,7 @@ public class FileOptionsDialog extends Dialog {
             @Override
             public void onClick(View v) {
                 shareFile(selectedFile);
+                // TODO: CUSTOMIZE SHARE MENU
             }
         });
     }
@@ -192,26 +199,4 @@ public class FileOptionsDialog extends Dialog {
         mediaPlayer.release();
     }
 
-    // Initialize and set up Visualizer
-        /*visualizerView = findViewById(R.id.visualizer_view);
-        Visualizer visualizer = new Visualizer(mediaPlayer.getAudioSessionId());
-        visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
-        visualizer.setDataCaptureListener(
-                new Visualizer.OnDataCaptureListener() {
-                    @Override
-                    public void onWaveFormDataCapture(Visualizer visualizer, byte[] waveform, int samplingRate) {
-                        visualizerView.setWaveform(waveform);
-                    }
-
-                    @Override
-                    public void onFftDataCapture(Visualizer visualizer, byte[] fft, int samplingRate) {
-                        // Ignore, we're only interested in waveform data
-                    }
-                },
-                Visualizer.getMaxCaptureRate() / 2,
-                true,
-                false);
-        visualizer.setEnabled(true);
-
-        */
 }

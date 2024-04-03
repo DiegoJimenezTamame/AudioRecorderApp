@@ -11,6 +11,7 @@ import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -29,6 +30,19 @@ import java.util.Locale;
 
 import at.wifi.swdev.audiorecorderapp.R;
 import android.media.audiofx.Visualizer;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+
+//importing required classes
+import android.media.MediaPlayer;
+import android.os.Bundle;
+import android.view.View;
+import com.chibde.visualizer.BarVisualizer;
+import com.chibde.visualizer.CircleBarVisualizer;
+import com.chibde.visualizer.CircleVisualizer;
+import com.chibde.visualizer.LineBarVisualizer;
+import com.chibde.visualizer.LineVisualizer;
+import com.chibde.visualizer.SquareBarVisualizer;
 
 
 public class RecorderFragment extends Fragment {
@@ -38,9 +52,9 @@ public class RecorderFragment extends Fragment {
     ImageButton btnPlay;
     TextView txtRecStatus;
     Chronometer timeRec;
-    private Visualizer visualizer;
+    private LineBarVisualizer lineBarVisualizer;
     private File path;
-    private MediaPlayer mediaPlayer;
+    public  MediaPlayer mediaPlayer;
     private MediaRecorder recorder;
     boolean isRecording = false;
     private static String fileName;
@@ -63,6 +77,7 @@ public class RecorderFragment extends Fragment {
         btnPlay = view.findViewById(R.id.play_button);
         txtRecStatus = view.findViewById(R.id.textRecStatus);
         timeRec = view.findViewById(R.id.timeRec);
+        lineBarVisualizer = view.findViewById(R.id.visualizerLineBar);
 
         isRecording = false;
 
@@ -92,6 +107,11 @@ public class RecorderFragment extends Fragment {
                     txtRecStatus.setText(R.string.recordinglive);
                     btnRec.setImageResource(R.drawable.ic_stop);
                     isRecording = true;
+
+                    // Start visualization
+                    lineBarVisualizer.setVisibility(View.VISIBLE);
+                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.purple_200)); // Set color as per your requirement
+                    lineBarVisualizer.setDensity(10000); // Set density as per your requirement
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Recording failed", Toast.LENGTH_SHORT).show();
@@ -103,6 +123,9 @@ public class RecorderFragment extends Fragment {
                 txtRecStatus.setText("");
                 btnRec.setImageResource(R.drawable.ic_microphone);
                 isRecording = false;
+
+                // Stop visualization
+                lineBarVisualizer.setVisibility(View.GONE);
             }
         });
 
@@ -117,6 +140,32 @@ public class RecorderFragment extends Fragment {
                     Toast.makeText(getContext(), "Playing recorded audio", Toast.LENGTH_SHORT).show();
                     // Change icon to Pause
                     btnPlay.setImageResource(R.drawable.pause_button_icon);
+
+                    // Start visualization
+                    lineBarVisualizer.setPlayer(mediaPlayer.getAudioSessionId());
+                    lineBarVisualizer.setVisibility(View.VISIBLE);
+                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.purple_700)); // Set color as per your requirement
+                    lineBarVisualizer.setDensity(1000); // Set density as per your requirement
+
+                    // Start chronometer
+                    timeRec.setBase(SystemClock.elapsedRealtime());
+                    timeRec.start();
+
+                    // Set completion listener to handle playback completion
+                    mediaPlayer.setOnCompletionListener(mp -> {
+                        // Change icon back to play icon
+                        btnPlay.setImageResource(R.drawable.play_button_icon);
+
+                        // Stop visualization
+                        lineBarVisualizer.setVisibility(View.GONE);
+
+                        // Stop chronometer
+                        timeRec.stop();
+
+                        // Release MediaPlayer resources
+                        mediaPlayer.release();
+                        mediaPlayer = null;
+                    });
                 } catch (IOException e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Failed to play recorded audio", Toast.LENGTH_SHORT).show();
@@ -128,12 +177,24 @@ public class RecorderFragment extends Fragment {
                     // Change icon to Play
                     btnPlay.setImageResource(R.drawable.play_button_icon);
                     Toast.makeText(getContext(), "Playback paused", Toast.LENGTH_SHORT).show();
+
+                    // Stop visualization
+                    lineBarVisualizer.setVisibility(View.GONE);
+
+                    // Stop chronometer
+                    timeRec.stop();
                 } else {
                     // Resume MediaPlayer
                     mediaPlayer.start();
                     // Change icon to Pause
                     btnPlay.setImageResource(R.drawable.pause_button_icon);
                     Toast.makeText(getContext(), "Playback resumed", Toast.LENGTH_SHORT).show();
+
+                    // Start visualization
+                    lineBarVisualizer.setVisibility(View.VISIBLE);
+
+                    // Resume chronometer
+                    timeRec.start();
                 }
             }
         });
@@ -212,6 +273,7 @@ public class RecorderFragment extends Fragment {
     public void onPause() {
         super.onPause();
         btnPlay.setVisibility(View.GONE);
+        timeRec.stop();
     }
 
     @Override
