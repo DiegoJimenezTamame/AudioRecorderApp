@@ -2,7 +2,6 @@ package at.wifi.swdev.audiorecorderapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,18 +21,21 @@ public class EditSoundDialog extends DialogFragment {
 
     private boolean isLooping;
     private int longClickedButtonIndex = -1;
+    private View dialogView;
 
-    private final String[] colorOptions = {
+    /*private final String[] colorOptions = {
             "Blue", "Green", "Pink", "Orange", "Purple"
-    };
+    };*/
 
-    private final int[] colorResources = {
+    /*private final int[] colorResources = {
             R.drawable.blue_button,
             R.drawable.green_button,
             R.drawable.pink_button,
             R.drawable.orange_button,
             R.drawable.purple_button
-    };
+    };*/
+
+    private int buttonIndex;
 
 
     @NonNull
@@ -41,7 +43,7 @@ public class EditSoundDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
         LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialog_edit_sound, null);
+        dialogView = inflater.inflate(R.layout.dialog_edit_sound, null);
 
         // Find the toggle button for looping
         ImageButton loopImageButton;
@@ -55,7 +57,6 @@ public class EditSoundDialog extends DialogFragment {
 
         ImageButton colorPalette = dialogView.findViewById(R.id.color_palette);
         colorPalette.setOnClickListener(v -> showColorSelectionDialog());
-        ImageButton updateColorButton; // Declare updateColorButton variable
 
         ImageButton loadSoundButton = dialogView.findViewById(R.id.load_sound_button);
         loadSoundButton.setOnClickListener(v -> {
@@ -75,7 +76,7 @@ public class EditSoundDialog extends DialogFragment {
                 String filePath = selectedFile.getAbsolutePath();
                 DrumpadFragment drumpadFragment = (DrumpadFragment) getParentFragment();
                 if (drumpadFragment != null) {
-                    drumpadFragment.loadSound(filePath);
+                    drumpadFragment.loadSound(filePath, buttonIndex);
                 }
             });
             fileChooserBuilder.show();
@@ -87,17 +88,24 @@ public class EditSoundDialog extends DialogFragment {
         return builder.create();
     }
 
-    private void showColorSelectionDialog() {
+    public void setButtonIndex(int index) {
+        buttonIndex = index;
+    }
+    public void showColorSelectionDialog() {
         ColorSelectionDialog dialog = new ColorSelectionDialog();
         dialog.setOnColorSelectedListener(color -> {
-            ImageButton updateColor = getView().findViewById(R.id.color_list_view);
             int drawableResId = getColorDrawableResource(color);
             if (drawableResId != 0) {
-                updateColor.setImageResource(drawableResId);
+                // Update the image resource in the Drumpad Fragment using the longClickedButtonIndex
+                DrumpadFragment drumpadFragment = (DrumpadFragment) getParentFragment();
+                if (drumpadFragment != null) {
+                    drumpadFragment.updateButtonImage(longClickedButtonIndex, drawableResId);
+                }
             }
         });
         dialog.show(getChildFragmentManager(), "ColorSelectionDialog");
     }
+
 
     private int getColorDrawableResource(String color){
         switch (color){
@@ -139,27 +147,20 @@ public class EditSoundDialog extends DialogFragment {
         return soundFiles;
     }
 
-    public void setLongClickedButtonIndex(int index) {
-        longClickedButtonIndex = index;
-    }
     private void applyChanges() {
         dismiss();
-        Fragment parentFragment = getParentFragment();
+        Fragment parentFragment = getTargetFragment(); // Retrieve the target fragment (DrumpadFragment)
         if (parentFragment instanceof DrumpadFragment) {
             DrumpadFragment drumpadFragment = (DrumpadFragment) parentFragment;
             // Apply changes to the behavior of the long-clicked button
             if (longClickedButtonIndex != -1) {
                 drumpadFragment.updateLooping(longClickedButtonIndex, isLooping);
+                // Also, update the ImageButton with any other changes (e.g., image resource)
             }
         }
     }
-    public void setLooping(boolean looping){
-        //Default looping state
-        isLooping = false;
-    }
-
     public void updateLoopingButtonState(ImageButton button){
-        if (isLooping) {
+        if(isLooping) {
             button.setImageResource(R.drawable.ic_loop_on); // Change to the looping icon
         }else{
             button.setImageResource(R.drawable.ic_loop_off);
