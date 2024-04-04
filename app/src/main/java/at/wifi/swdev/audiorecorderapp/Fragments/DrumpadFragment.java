@@ -28,11 +28,16 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
         private SoundPool soundPool;
         private int[] soundIds = new int[12];
         private int longClickedButtonIndex = -1; // Initialize with an invalid index
+        private SoundPool.Builder soundPoolBuilder;
+        private boolean defaultSoundsLoaded = false;
         private ImageButton[] buttons = new ImageButton[12];
         private boolean[] loopingStates = new boolean[12];
         private int buttonIndex = 0; // Default value
         private int currentButtonIndex = 0; // Default value
         private ToggleButton toggleButton;
+        AudioAttributes attributes;
+        AudioAttributes.Builder audioAttributesBuilder;
+
 
         @Nullable
         @Override
@@ -188,6 +193,8 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             // Get the looping state for the selected button
             boolean isLooping = (buttonIndex == soundIndex) && loopingStates[soundIndex];
             // Use the looping state for the corresponding button
+            int isooping = loopingStates[soundIndex] ? -1 : 0; // -1 for loop, 0 for no loop
+
             // Play sound continuously if looping is enabled and button is pressed
             if (isLooping) {
                 // Start playing the sound
@@ -201,8 +208,10 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
 
     private void showOptionsDialog(int buttonIndex) {
         if (buttonIndex >= 0 && buttonIndex < loopingStates.length) {
+            // Update longClickedButtonIndex when showing the dialog
             longClickedButtonIndex = buttonIndex;
             EditSoundDialog dialog = new EditSoundDialog();
+            dialog.setLongClickedButtonIndex(buttonIndex);
             dialog.setButtonIndex(buttonIndex); // Pass the index of the button
             dialog.show(getChildFragmentManager(), "EditSoundDialog");
         } else {
@@ -213,6 +222,12 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
     public void updateLooping(int buttonIndex, boolean isLooping) {
         loopingStates[buttonIndex] = isLooping;
     }
+    public int getCurrentButtonIndex(){
+            return currentButtonIndex;
+    }
+
+
+
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -221,7 +236,9 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
     }
 
     @Override
-    public void onClick(View v) {}
+    public void onClick(View v) {
+
+    }
 
     @NonNull
     @Override
@@ -238,6 +255,91 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+         /*@Override
+       public void onCreate(Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.fragment_drumpad);
 
+            AudioAttributes audioAttributes = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+                audioAttributes = new AudioAttributes.Builder()
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .setUsage(AudioAttributes.USAGE_GAME)
+                        .build();
+            }
+
+            soundPool = new SoundPool.Builder()
+                    .setMaxStreams(16)
+                    .setAudioAttributes(audioAttributes)
+                    .build();
+
+            sound1 = soundPool.load(getApplicationContext(), R.raw.sound1, 1);
+            sound2 = soundPool.load(getApplicationContext(), R.raw.sound2, 1);
+            sound3 = soundPool.load(getApplicationContext(), R.raw.sound3, 1);
+            sound4 = soundPool.load(getApplicationContext(), R.raw.sound4, 1);
+            sound5 = soundPool.load(getApplicationContext(), R.raw.sound5, 1);
+            sound6 = soundPool.load(getApplicationContext(), R.raw.sound6, 1);
+            sound7 = soundPool.load(getApplicationContext(), R.raw.sound7, 1);
+            sound8 = soundPool.load(getApplicationContext(), R.raw.sound8, 1);
+            sound9 = soundPool.load(getApplicationContext(), R.raw.sound9, 1);
+            sound10 = soundPool.load(getApplicationContext(), R.raw.sound10, 1);
+            sound11 = soundPool.load(getApplicationContext(), R.raw.sound11, 1);
+            sound12 = soundPool.load(getApplicationContext(), R.raw.sound12, 1);
+
+        }
+
+
+        public void playSound1 (View v){
+            soundPool.play(sound1,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound2 (View v){
+            soundPool.play(sound2,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound3 (View v){
+            soundPool.play(sound3,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound4 (View v){
+            soundPool.play(sound4,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound5 (View v){
+            soundPool.play(sound5,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound6 (View v){
+            soundPool.play(sound6,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound7 (View v){
+            soundPool.play(sound7,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound8 (View v){
+            soundPool.play(sound8,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound9 (View v){
+            soundPool.play(sound9,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound10 (View v){
+            soundPool.play(sound10,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound11 (View v){
+            soundPool.play(sound11,1.0f,1.0f,0,0,1f);
+        }
+        public void playSound12 (View v){
+            soundPool.play(sound10,1.0f,1.0f,0,0,1f);
+        }
+
+        @Override
+        public void onClick(View v) {
+
+        }
+        @Override
+        public void onPointerCaptureChanged(boolean hasCapture) {
+            super.onPointerCaptureChanged(hasCapture);
+        }
+
+        @Override
+        public void onPause(){
+            super.onPause();
+            soundPool.release();
+        }
+    }*/
 }
 

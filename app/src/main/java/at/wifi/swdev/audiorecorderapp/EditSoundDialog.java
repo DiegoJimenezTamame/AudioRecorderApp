@@ -2,6 +2,7 @@ package at.wifi.swdev.audiorecorderapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,18 +23,17 @@ public class EditSoundDialog extends DialogFragment {
     private boolean isLooping;
     private int longClickedButtonIndex = -1;
     private View dialogView;
-
-    /*private final String[] colorOptions = {
+    private final String[] colorOptions = {
             "Blue", "Green", "Pink", "Orange", "Purple"
-    };*/
+    };
 
-    /*private final int[] colorResources = {
+    private final int[] colorResources = {
             R.drawable.blue_button,
             R.drawable.green_button,
             R.drawable.pink_button,
             R.drawable.orange_button,
             R.drawable.purple_button
-    };*/
+    };
 
     private int buttonIndex;
 
@@ -146,7 +146,9 @@ public class EditSoundDialog extends DialogFragment {
         }
         return soundFiles;
     }
-
+    public void setLongClickedButtonIndex(int index) {
+        longClickedButtonIndex = index;
+    }
     private void applyChanges() {
         dismiss();
         Fragment parentFragment = getTargetFragment(); // Retrieve the target fragment (DrumpadFragment)
@@ -159,6 +161,11 @@ public class EditSoundDialog extends DialogFragment {
             }
         }
     }
+    public void setLooping(boolean looping){
+        //Default looping state
+        isLooping = false;
+    }
+
     public void updateLoopingButtonState(ImageButton button){
         if(isLooping) {
             button.setImageResource(R.drawable.ic_loop_on); // Change to the looping icon
