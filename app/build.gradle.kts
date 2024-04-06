@@ -43,6 +43,8 @@ dependencies {
     implementation ("pl.droidsonroids.gif:android-gif-drawable:1.2.28")
     implementation ("com.android.support:multidex:1.0.3")
     implementation ("io.github.gautamchibde:audiovisualizer:2.2.5")
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
 }
 

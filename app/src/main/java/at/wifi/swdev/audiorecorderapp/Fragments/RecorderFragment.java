@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,6 +38,7 @@ import at.wifi.swdev.audiorecorderapp.R;
 import androidx.core.content.ContextCompat;
 
 //importing required classes
+import com.bumptech.glide.Glide;
 import com.chibde.visualizer.LineBarVisualizer;
 
 
@@ -61,6 +63,8 @@ public class RecorderFragment extends Fragment {
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.ACCESS_MEDIA_LOCATION
     };
+
+    private ImageView gifImageView;
 
     @Nullable
     @Override
@@ -91,6 +95,7 @@ public class RecorderFragment extends Fragment {
         if (!path.exists()) {
             path.mkdirs();
         }
+        gifImageView = view.findViewById(R.id.gifImageView);
 
         btnRec.setOnClickListener(view -> {
             if (!isRecording) {
@@ -138,7 +143,7 @@ public class RecorderFragment extends Fragment {
                     // Start visualization
                     lineBarVisualizer.setPlayer(mediaPlayer.getAudioSessionId());
                     lineBarVisualizer.setVisibility(View.VISIBLE);
-                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.teal_200)); // Set color as per your requirement
+                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.blueendcolor));// Set color as per your requirement
                     lineBarVisualizer.setDensity(70); // Set density as per your requirement
 
                     // Start chronometer
@@ -322,6 +327,8 @@ public class RecorderFragment extends Fragment {
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
         recorder.setOutputFile(fileName);
         btnPlay.setVisibility(View.GONE);
+        Glide.with(this).asGif().load(R.drawable.recording_animation).into(gifImageView);
+        gifImageView.setVisibility(View.VISIBLE);
 
         try {
             recorder.prepare();
@@ -336,6 +343,7 @@ public class RecorderFragment extends Fragment {
             recorder.stop();
             recorder.release();
             recorder = null;
+            gifImageView.setVisibility(View.GONE);
         }
         btnPlay.setVisibility(View.VISIBLE);
     }

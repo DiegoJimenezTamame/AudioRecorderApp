@@ -62,8 +62,8 @@ public class FileOptionsDialog extends Dialog {
                 mediaPlayer.start();
                 playButton.setImageResource(R.drawable.pause_button_icon);
                 lineBarVisualizer.setVisibility(View.VISIBLE);
-                lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.teal_200)); // Set color as per your requirement
-                lineBarVisualizer.setDensity(70); // Set density as per your requirement
+                lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.blueendcolor)); // Set color as per your requirement
+                lineBarVisualizer.setDensity(60); // Set density as per your requirement
             }
             isPlaying = !isPlaying;
         });

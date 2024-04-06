@@ -194,20 +194,22 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
 
     private void playSound(int soundIndex) {
         if (soundIndex >= 0 && soundIndex < soundIds.length) {
-            // Get the looping state for the selected button
-            boolean isLooping = (buttonIndex == soundIndex) && loopingStates[soundIndex];
-            // Use the looping state for the corresponding button
-            int isooping = loopingStates[soundIndex] ? -1 : 0; // -1 for loop, 0 for no loop
+            // Check if looping is enabled for the selected button
+            boolean isLoopingEnabled = loopingStates[soundIndex];
+
+            // Check if the button is currently being edited
+            boolean isEditing = (longClickedButtonIndex == soundIndex);
 
             // Adjust playback rate based on button's playback speed
             float playbackRate = playbackSpeedMap.containsKey(soundIndex) ? playbackSpeedMap.get(soundIndex) : 1.0f;
 
-            // Play sound continuously if looping is enabled and button is pressed
-            if (isLooping) {
+            // If looping is enabled and the button is not being edited
+            // play the sound continuously as long as the button is pressed
+            if (isLoopingEnabled && !isEditing) {
                 // Start playing the sound with adjusted playback rate
                 soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, -1, playbackRate);
             } else {
-                // Play the sound once with adjusted playback rate
+                // Otherwise, play the sound once with adjusted playback rate
                 soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, 0, playbackRate);
             }
         }

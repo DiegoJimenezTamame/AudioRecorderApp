@@ -27,7 +27,7 @@
         android:background="@color/purpleendcolor"
         android:padding="8dp"
         android:checked="false"
-        android:contentDescription="@string/playback_speed"
+        android:contentDescription="Playback Speed"
         style="@style/DialogButtonStyle"/>
 
     <ImageButton
