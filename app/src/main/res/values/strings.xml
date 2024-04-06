@@ -18,4 +18,7 @@
     <string name="lock">Lock</string>
     <string name="unlock">Unlock</string>
     <string name="audio_format">Audio Format</string>
+    <string name="_0_1">0.1</string>
+    <string name="_2_0">2.0</string>
+    <string name="playback_speed">Playback Speed</string>
 </resources>
