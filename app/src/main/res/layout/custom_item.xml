@@ -9,8 +9,10 @@
     <ImageView
         android:id="@+id/imgRec"
         android:src="@drawable/ic_recordings"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+         android:layout_marginStart="8dp"
+        android:layout_gravity="center_vertical"
         android:contentDescription="">
     </ImageView>
     <TextView

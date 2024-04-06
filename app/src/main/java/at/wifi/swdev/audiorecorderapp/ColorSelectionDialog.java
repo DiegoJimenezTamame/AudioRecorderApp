@@ -14,7 +14,7 @@ import androidx.fragment.app.DialogFragment;
 import java.util.Arrays;
 import java.util.List;
 
-import at.wifi.swdev.audiorecorderapp.Adapters.CustomListAdapter;
+import at.wifi.swdev.audiorecorderapp.Adapters.CustomColorListAdapter;
 
 public class ColorSelectionDialog extends DialogFragment {
 
@@ -37,7 +37,7 @@ public class ColorSelectionDialog extends DialogFragment {
         );
 
         // Create custom adapter with circle icons
-        CustomListAdapter adapter = new CustomListAdapter(requireContext(), R.layout.color_list_view,
+        CustomColorListAdapter adapter = new CustomColorListAdapter(requireContext(), R.layout.color_list_view,
                 Arrays.asList(getResources().getStringArray(R.array.color_options)), circleIcons);
 
         colorListView.setAdapter(adapter); // Set adapter to ListView

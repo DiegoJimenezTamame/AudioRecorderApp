@@ -15,13 +15,13 @@ import java.util.List;
 
 import at.wifi.swdev.audiorecorderapp.R;
 
-public class CustomListAdapter extends ArrayAdapter<String> {
+public class CustomColorListAdapter extends ArrayAdapter<String> {
 
     private final Context mContext;
     private final List<String> mItems;
     private final List<Integer> mCircleIcons; // List of drawable resource IDs for circle icons
 
-    public CustomListAdapter(@NonNull Context context, int resource, @NonNull List<String> items, List<Integer> circleIcons) {
+    public CustomColorListAdapter(@NonNull Context context, int resource, @NonNull List<String> items, List<Integer> circleIcons) {
         super(context, resource, items);
         this.mContext = context;
         this.mItems = items;

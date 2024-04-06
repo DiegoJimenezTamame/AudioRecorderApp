@@ -10,6 +10,7 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -30,9 +31,11 @@ import androidx.fragment.app.Fragment;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
+import at.wifi.swdev.audiorecorderapp.Adapters.AudioFormatListAdapter;
 import at.wifi.swdev.audiorecorderapp.R;
 
 import androidx.core.content.ContextCompat;
@@ -43,7 +46,6 @@ import com.chibde.visualizer.LineBarVisualizer;
 
 
 public class RecorderFragment extends Fragment {
-
     View view;
     ImageButton btnRec;
     ImageButton btnPlay;
@@ -235,21 +237,27 @@ public class RecorderFragment extends Fragment {
 
     private void showAudioFormatsDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme);
-        builder.setTitle("Choose Audio Format")
-                .setItems(R.array.audio_formats, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item
-                        String selectedFormat = getResources().getStringArray(R.array.audio_formats)[which];
-                        updateFileName(selectedFormat); // Call updateFileName to update the file name
-                        startRecording(selectedFormat);
-                    }
-                })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
-                    }
-                });
+        builder.setTitle("Choose Audio Format");
+
+        String[] audioFormats = getResources().getStringArray(R.array.audio_formats);
+        int[] icons = {
+                R.drawable.mpeg_format,
+                R.drawable.threegp_format,
+                R.drawable.ogg_format,
+                R.drawable.amr_format,
+        }; // Add icons as needed
+
+        AudioFormatListAdapter adapter = new AudioFormatListAdapter(requireContext(), audioFormats, icons);
+
+        builder.setAdapter(adapter,
+                        (dialog, which) -> {
+                            // The 'which' argument contains the index position
+                            // of the selected item
+                            String selectedFormat = audioFormats[which];
+                            updateFileName(selectedFormat); // Call updateFileName to update the file name
+                            startRecording(selectedFormat);
+                        })
+                .setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());
         builder.create().show();
     }
 
@@ -268,7 +276,6 @@ public class RecorderFragment extends Fragment {
                 fileName = path + "/recording_" + date + ".ogg";
                 break;
             case "AMR (Default)":
-                fileName = path + "/recording_" + date + ".amr";
             default: // Default case (AMR_NB)
                 fileName = path + "/recording_" + date + ".amr";
                 break;
@@ -302,7 +309,7 @@ public class RecorderFragment extends Fragment {
         }
     }
 
-    private void startRecording (String selectedFormat) {
+    private void startRecording(String selectedFormat) {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
 
@@ -310,21 +317,29 @@ public class RecorderFragment extends Fragment {
         switch (selectedFormat) {
             case "MPEG4":
                 recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC); // AAC encoder for MPEG4
                 break;
             case "3GP":
                 recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB); // AMR_NB encoder for 3GP
                 break;
             case "OGG":
                 recorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
+                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.VORBIS); // Vorbis encoder for OGG
                 break;
             case "AMR (Default)":
-                recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-            // Add cases for additional formats if needed
+                break;
             default: // Default case (AMR_NB)
                 recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+                recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB); // AMR_NB encoder for default
                 break;
         }
-        recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+
+        // Initialize the file path and name
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault());
+        String date = format.format(new Date());
+        fileName = path + "/recording_" + date + getFileExtension(selectedFormat);
+
         recorder.setOutputFile(fileName);
         btnPlay.setVisibility(View.GONE);
         Glide.with(this).asGif().load(R.drawable.recording_animation).into(gifImageView);
@@ -332,10 +347,28 @@ public class RecorderFragment extends Fragment {
 
         try {
             recorder.prepare();
+            recorder.start();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            throw new RuntimeException("Failed to prepare MediaRecorder", e);
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to start recording. IllegalStateException", e);
         }
-        recorder.start();
+    }
+
+    private String getFileExtension(String selectedFormat) {
+        switch (selectedFormat) {
+            case "MPEG4":
+                return ".mp4";
+            case "3GP":
+                return ".3gp";
+            case "OGG":
+                return ".ogg";
+            case "AMR (Default)":
+            default: // Default case (AMR_NB)
+                return ".amr";
+        }
     }
 
     private void stopRecording() {
