@@ -20,6 +20,17 @@
         style="@style/DialogButtonStyle"/>
 
     <ImageButton
+        android:id="@+id/playback_speed_button"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/ic_playback_speed"
+        android:background="@color/purpleendcolor"
+        android:padding="8dp"
+        android:checked="false"
+        android:contentDescription="@string/playback_speed"
+        style="@style/DialogButtonStyle"/>
+
+    <ImageButton
         android:id="@+id/color_palette"
         android:layout_width="48dp"
         android:layout_height="48dp"

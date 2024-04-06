@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.viewmodel.CreationExtras;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 import at.wifi.swdev.audiorecorderapp.EditSoundDialog;
 import at.wifi.swdev.audiorecorderapp.R;
@@ -37,6 +39,8 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
         private ToggleButton toggleButton;
         AudioAttributes attributes;
         AudioAttributes.Builder audioAttributesBuilder;
+        private Map<Integer, Float> playbackSpeedMap = new HashMap<>();
+
 
 
         @Nullable
@@ -195,13 +199,16 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             // Use the looping state for the corresponding button
             int isooping = loopingStates[soundIndex] ? -1 : 0; // -1 for loop, 0 for no loop
 
+            // Adjust playback rate based on button's playback speed
+            float playbackRate = playbackSpeedMap.containsKey(soundIndex) ? playbackSpeedMap.get(soundIndex) : 1.0f;
+
             // Play sound continuously if looping is enabled and button is pressed
             if (isLooping) {
-                // Start playing the sound
-                soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, -1, 1f);
+                // Start playing the sound with adjusted playback rate
+                soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, -1, playbackRate);
             } else {
-                // Play the sound once
-                soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, 0, 1f);
+                // Play the sound once with adjusted playback rate
+                soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, 0, playbackRate);
             }
         }
     }
@@ -224,6 +231,16 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
     }
     public int getCurrentButtonIndex(){
             return currentButtonIndex;
+    }
+
+    public void applyPlaybackSpeed() {
+        for (Map.Entry<Integer, Float> entry : playbackSpeedMap.entrySet()) {
+            int buttonIndex = entry.getKey();
+            float playbackSpeed = entry.getValue();
+            if (soundPool != null) {
+                soundPool.setRate(soundIds[buttonIndex], playbackSpeed);
+            }
+        }
     }
 
 

@@ -3,7 +3,6 @@ package at.wifi.swdev.audiorecorderapp;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
@@ -129,7 +128,6 @@ public class FileOptionsDialog extends Dialog {
         ImageButton shareButton = findViewById(R.id.share_button);
         shareButton.setOnClickListener(v -> {
             shareFile(selectedFile);
-            // TODO: CUSTOMIZE SHARE MENU
         });
     }
 

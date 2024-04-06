@@ -2,11 +2,11 @@ package at.wifi.swdev.audiorecorderapp;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +15,8 @@ import androidx.fragment.app.Fragment;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import at.wifi.swdev.audiorecorderapp.Fragments.DrumpadFragment;
 
@@ -37,6 +39,9 @@ public class EditSoundDialog extends DialogFragment {
 
     private int buttonIndex;
 
+    private Map<Integer, Float> playbackSpeedMap = new HashMap<>();
+
+
 
     @NonNull
     @Override
@@ -54,6 +59,9 @@ public class EditSoundDialog extends DialogFragment {
             isLooping = !isLooping;
             updateLoopingButtonState(loopImageButton);
         }); // Set initial state
+
+        ImageButton playbackSpeedButton = dialogView.findViewById(R.id.playback_speed_button);
+        playbackSpeedButton.setOnClickListener(v -> showPlaybackSpeedDialog());
 
         ImageButton colorPalette = dialogView.findViewById(R.id.color_palette);
         colorPalette.setOnClickListener(v -> showColorSelectionDialog());
@@ -105,8 +113,6 @@ public class EditSoundDialog extends DialogFragment {
         });
         dialog.show(getChildFragmentManager(), "ColorSelectionDialog");
     }
-
-
     private int getColorDrawableResource(String color){
         switch (color){
             case "Blue":
@@ -149,6 +155,44 @@ public class EditSoundDialog extends DialogFragment {
     public void setLongClickedButtonIndex(int index) {
         longClickedButtonIndex = index;
     }
+    private void showPlaybackSpeedDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.dialog_playback_speed, null);
+        SeekBar playbackSpeedSlider = dialogView.findViewById(R.id.playback_speed_slider);
+
+        playbackSpeedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // Adjust the playback speed based on the progress
+                float speed = (float) progress / 100;
+                // Update the playback speed for the specific button
+                playbackSpeedMap.put(buttonIndex, speed);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {}
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {}
+        });
+
+        builder.setView(dialogView)
+                .setTitle("Adjust Playback Speed")
+                .setPositiveButton("Apply", (dialog, which) -> {
+                    // Apply the selected playback speed
+                    DrumpadFragment drumpadFragment = (DrumpadFragment) getParentFragment();
+                    if (drumpadFragment != null) {
+                        drumpadFragment.applyPlaybackSpeed();
+                    }
+                })
+                .setNegativeButton("Cancel", (dialog, which) -> dialog.dismiss());
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+
     private void applyChanges() {
         dismiss();
         Fragment parentFragment = getTargetFragment(); // Retrieve the target fragment (DrumpadFragment)

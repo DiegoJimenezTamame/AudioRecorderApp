@@ -25,5 +25,9 @@
         <!-- Customize text color -->
         <item name="android:textColor">@android:color/white</item>
     </style>
+    <style name="WhiteSeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressDrawable">@drawable/seekbar_progress</item>
+        <item name="android:thumb">@drawable/seekbar_thumb</item>
+    </style>
 
 </resources>
