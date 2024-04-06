@@ -1,7 +1,9 @@
 package at.wifi.swdev.audiorecorderapp.Fragments;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
@@ -9,9 +11,11 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.Chronometer;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -29,20 +33,11 @@ import java.util.Date;
 import java.util.Locale;
 
 import at.wifi.swdev.audiorecorderapp.R;
-import android.media.audiofx.Visualizer;
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.core.content.ContextCompat;
 
 //importing required classes
-import android.media.MediaPlayer;
-import android.os.Bundle;
-import android.view.View;
-import com.chibde.visualizer.BarVisualizer;
-import com.chibde.visualizer.CircleBarVisualizer;
-import com.chibde.visualizer.CircleVisualizer;
 import com.chibde.visualizer.LineBarVisualizer;
-import com.chibde.visualizer.LineVisualizer;
-import com.chibde.visualizer.SquareBarVisualizer;
 
 
 public class RecorderFragment extends Fragment {
@@ -59,7 +54,6 @@ public class RecorderFragment extends Fragment {
     boolean isRecording = false;
     private static String fileName;
     private Context context;
-
     private static final int REQUEST_PERMISSION_CODE = 1001;
     private static final String[] PERMISSIONS = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -101,7 +95,7 @@ public class RecorderFragment extends Fragment {
         btnRec.setOnClickListener(view -> {
             if (!isRecording) {
                 try {
-                    startRecording();
+                    startRecording("AMR_NB");
                     timeRec.setBase(SystemClock.elapsedRealtime());
                     timeRec.start();
                     txtRecStatus.setText(R.string.recordinglive);
@@ -110,8 +104,8 @@ public class RecorderFragment extends Fragment {
 
                     // Start visualization
                     lineBarVisualizer.setVisibility(View.VISIBLE);
-                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.purple_200)); // Set color as per your requirement
-                    lineBarVisualizer.setDensity(10000); // Set density as per your requirement
+                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.teal_200)); // Set color as per your requirement
+                    lineBarVisualizer.setDensity(70); // Set density as per your requirement
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Recording failed", Toast.LENGTH_SHORT).show();
@@ -144,8 +138,8 @@ public class RecorderFragment extends Fragment {
                     // Start visualization
                     lineBarVisualizer.setPlayer(mediaPlayer.getAudioSessionId());
                     lineBarVisualizer.setVisibility(View.VISIBLE);
-                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.purple_700)); // Set color as per your requirement
-                    lineBarVisualizer.setDensity(1000); // Set density as per your requirement
+                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.teal_200)); // Set color as per your requirement
+                    lineBarVisualizer.setDensity(70); // Set density as per your requirement
 
                     // Start chronometer
                     timeRec.setBase(SystemClock.elapsedRealtime());
@@ -218,6 +212,70 @@ public class RecorderFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.menu_recorder_fragment, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_audio_format) {
+            // Show audio format dialog
+            showAudioFormatsDialog();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showAudioFormatsDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireContext(), R.style.AlertDialogTheme);
+        builder.setTitle("Choose Audio Format")
+                .setItems(R.array.audio_formats, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // The 'which' argument contains the index position
+                        // of the selected item
+                        String selectedFormat = getResources().getStringArray(R.array.audio_formats)[which];
+                        updateFileName(selectedFormat); // Call updateFileName to update the file name
+                        startRecording(selectedFormat);
+                    }
+                })
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.create().show();
+    }
+
+    private void updateFileName(String selectedFormat) {
+        SimpleDateFormat format = new SimpleDateFormat("ddMMyyyy_HHmmss", Locale.getDefault());
+        String date = format.format(new Date());
+
+        switch (selectedFormat) {
+            case "MPEG4":
+                fileName = path + "/recording_" + date + ".mp4";
+                break;
+            case "3GP":
+                fileName = path + "/recording_" + date + ".3gp";
+                break;
+            case "OGG":
+                fileName = path + "/recording_" + date + ".ogg";
+                break;
+            case "AMR (Default)":
+                fileName = path + "/recording_" + date + ".amr";
+            default: // Default case (AMR_NB)
+                fileName = path + "/recording_" + date + ".amr";
+                break;
+        }
+    }
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -234,17 +292,35 @@ public class RecorderFragment extends Fragment {
                 Toast.makeText(getContext(), "Granted", Toast.LENGTH_SHORT).show();
             } else {
                 // Handle denied permissions
-                Toast.makeText(getContext(), "Some permissions were denied. Audio Recorder Pro needs granted permission to operate properly.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Some permissions were denied. DW Sampler needs granted permission to operate properly.", Toast.LENGTH_SHORT).show();
             }
         }
     }
 
-    private void startRecording() {
+    private void startRecording (String selectedFormat) {
         recorder = new MediaRecorder();
         recorder.setAudioSource(MediaRecorder.AudioSource.MIC);
-        recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
-        recorder.setOutputFile(fileName);
+
+        // Set output format based on the selected format
+        switch (selectedFormat) {
+            case "MPEG4":
+                recorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+                break;
+            case "3GP":
+                recorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+                break;
+            case "OGG":
+                recorder.setOutputFormat(MediaRecorder.OutputFormat.OGG);
+                break;
+            case "AMR (Default)":
+                recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+            // Add cases for additional formats if needed
+            default: // Default case (AMR_NB)
+                recorder.setOutputFormat(MediaRecorder.OutputFormat.AMR_NB);
+                break;
+        }
         recorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+        recorder.setOutputFile(fileName);
         btnPlay.setVisibility(View.GONE);
 
         try {
@@ -262,11 +338,6 @@ public class RecorderFragment extends Fragment {
             recorder = null;
         }
         btnPlay.setVisibility(View.VISIBLE);
-    }
-
-    // Define a method to update the visualizer view
-    private void updateVisualizer(byte[] waveform) {
-        // Process the waveform data and update the visualizer view
     }
 
     @Override

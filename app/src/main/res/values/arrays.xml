@@ -32,4 +32,11 @@
         <item>@drawable/orange_button</item>
         <item>@drawable/purple_button</item>
     </string-array>
+    <string-array name="audio_formats">
+        <item>MPEG4</item>
+        <item>3GP</item>
+        <item>OGG</item>
+        <item>AMR (Default)</item>
+        <!-- Add more audio formats if needed -->
+    </string-array>
 </resources>

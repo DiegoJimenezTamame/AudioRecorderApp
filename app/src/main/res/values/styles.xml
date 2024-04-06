@@ -19,4 +19,11 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="AlertDialogTheme" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <!-- Customize background color -->
+        <item name="android:background">#3F3F3F</item>
+        <!-- Customize text color -->
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
 </resources>

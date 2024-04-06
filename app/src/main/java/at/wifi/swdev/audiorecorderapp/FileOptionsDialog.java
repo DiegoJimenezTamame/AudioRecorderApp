@@ -12,6 +12,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -53,112 +54,82 @@ public class FileOptionsDialog extends Dialog {
         lineBarVisualizer.setPlayer(mediaPlayer);
 
         ImageButton playButton = findViewById(R.id.play_button);
-        playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (isPlaying) {
-                    mediaPlayer.pause();
-                    playButton.setImageResource(R.drawable.play_button_icon);
-                    lineBarVisualizer.setVisibility(View.GONE);
-                } else {
-                    mediaPlayer.start();
-                    playButton.setImageResource(R.drawable.pause_button_icon);
-                    lineBarVisualizer.setVisibility(View.VISIBLE);
-                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.purple_700)); // Set color as per your requirement
-                    lineBarVisualizer.setDensity(1000); // Set density as per your requirement
-                }
-                isPlaying = !isPlaying;
+        playButton.setOnClickListener(v -> {
+            if (isPlaying) {
+                mediaPlayer.pause();
+                playButton.setImageResource(R.drawable.play_button_icon);
+                lineBarVisualizer.setVisibility(View.GONE);
+            } else {
+                mediaPlayer.start();
+                playButton.setImageResource(R.drawable.pause_button_icon);
+                lineBarVisualizer.setVisibility(View.VISIBLE);
+                lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.teal_200)); // Set color as per your requirement
+                lineBarVisualizer.setDensity(70); // Set density as per your requirement
             }
+            isPlaying = !isPlaying;
         });
 
         // Set completion listener for MediaPlayer
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mp) {
-                // Reset icon to play button and hide visualizer
-                playButton.setImageResource(R.drawable.play_button_icon);
-                lineBarVisualizer.setVisibility(View.GONE);
-                isPlaying = false; // Reset play state
-            }
+        mediaPlayer.setOnCompletionListener(mp -> {
+            // Reset icon to play button and hide visualizer
+            playButton.setImageResource(R.drawable.play_button_icon);
+            lineBarVisualizer.setVisibility(View.GONE);
+            isPlaying = false; // Reset play state
         });
 
         ImageButton deleteButton = findViewById(R.id.delete_button);
-        deleteButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Create a dialog to confirm file deletion
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialogStyle);
-                builder.setMessage("Are you sure you want to delete?")
-                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                deleteFile(selectedFile);
-                                dismiss();
-                            }
-                        })
-                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                // User cancelled the dialog
-                                dialog.dismiss();
-                            }
-                        });
-                // Create the AlertDialog object and show it
-                AlertDialog alertDialog = builder.create();
-                alertDialog.show();
-            }
+        deleteButton.setOnClickListener(v -> {
+            // Create a dialog to confirm file deletion
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialogStyle);
+            builder.setMessage("Are you sure you want to delete?");
+            builder.setPositiveButton("Yes", (dialog, id) -> {
+                deleteFile(selectedFile);
+                dismiss();
+            });
+            builder.setNegativeButton("No", (dialog, id) -> {
+                // User cancelled the dialog
+                dialog.dismiss();
+            });
+            // Create the AlertDialog object and show it
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
         });
 
 
         ImageButton renameButton = findViewById(R.id.rename_button);
-        renameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Implement file renaming functionality here
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialogStyle);
-                builder.setTitle("Rename File");
-                // Set Up the Input
-                final EditText input = new EditText(getContext());
-                input.setInputType(InputType.TYPE_CLASS_TEXT);
-                builder.setView(input);
+        renameButton.setOnClickListener(v -> {
+            // Implement file renaming functionality here
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialogStyle);
+            builder.setTitle("Rename File");
+            // Set Up the Input
+            final EditText input = new EditText(getContext());
+            input.setInputType(InputType.TYPE_CLASS_TEXT);
+            builder.setView(input);
 
-                // Set Up the Buttons
-                builder.setPositiveButton("Ok", new OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String newFileName = input.getText().toString();
-                        //Rename the file
-                        renameFile(selectedFile,newFileName);
-                        //Dismiss the dialog
-                        dismiss();
-                    }
-                });
-                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                });
-                builder.show();
-            }
+            // Set Up the Buttons
+            builder.setPositiveButton("Ok", (dialog, which) -> {
+                String newFileName = input.getText().toString();
+                //Rename the file
+                renameFile(selectedFile,newFileName);
+                //Dismiss the dialog
+                dismiss();
+            });
+            builder.setNegativeButton("Cancel", (dialog, which) -> dialog.cancel());
+            builder.show();
         });
 
 
         ImageButton trimButton = findViewById(R.id.trim_button);
-        trimButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Implement file trimming functionality here
-                // TODO: IMPLEMENT TRIM LOGIC HERE
-                dismiss();
-            }
+        trimButton.setOnClickListener(v -> {
+            // Implement file trimming functionality here
+            // TODO: IMPLEMENT TRIM LOGIC HERE
+            dismiss();
         });
 
         ImageButton shareButton = findViewById(R.id.share_button);
-        shareButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                shareFile(selectedFile);
-                // TODO: CUSTOMIZE SHARE MENU
-            }
+        shareButton.setOnClickListener(v -> {
+            shareFile(selectedFile);
+            // TODO: CUSTOMIZE SHARE MENU
         });
     }
 
@@ -176,9 +147,11 @@ public class FileOptionsDialog extends Dialog {
                 // File Renamed successfully
                 selectedFile = newFile; // Update selectedFile reference if necessary
                 // Update any UI elements or references
+                Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
             } else {
                 // Failed to rename file
                 // Handle error or show a message to the user
+                Toast.makeText(getContext(), "Renaming failed", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -187,7 +160,7 @@ public class FileOptionsDialog extends Dialog {
         Uri contentUri = FileProvider.getUriForFile(getContext(), getContext().getApplicationContext().getPackageName() + ".fileprovider", file);
 
         Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("*/*");
+        intent.setType("audio/*");
         intent.putExtra(Intent.EXTRA_STREAM, contentUri);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 

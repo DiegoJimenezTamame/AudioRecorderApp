@@ -4,4 +4,5 @@
     <item name="visualizer_view_dialog" type="id"/>
     <item name="color_list_view" type="id" />
     <item name="update_color" type="id" />
+    <item name="action_audio_format" type="id" />
 </resources>

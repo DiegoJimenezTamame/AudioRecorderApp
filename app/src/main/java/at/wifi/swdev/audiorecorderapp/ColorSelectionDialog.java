@@ -5,12 +5,16 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
+
+import java.util.Arrays;
+import java.util.List;
+
+import at.wifi.swdev.audiorecorderapp.Adapters.CustomListAdapter;
 
 public class ColorSelectionDialog extends DialogFragment {
 
@@ -23,8 +27,18 @@ public class ColorSelectionDialog extends DialogFragment {
         View dialogView = inflater.inflate(R.layout.dialog_color_selection, null);
 
         ListView colorListView = dialogView.findViewById(R.id.colorListView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(requireContext(),
-                android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.color_options));
+
+        List<Integer> circleIcons = Arrays.asList(
+                R.drawable.blue_button,
+                R.drawable.green_button,
+                R.drawable.pink_button,
+                R.drawable.orange_button,
+                R.drawable.purple_button
+        );
+
+        // Create custom adapter with circle icons
+        CustomListAdapter adapter = new CustomListAdapter(requireContext(), R.layout.color_list_view,
+                Arrays.asList(getResources().getStringArray(R.array.color_options)), circleIcons);
 
         colorListView.setAdapter(adapter); // Set adapter to ListView
 

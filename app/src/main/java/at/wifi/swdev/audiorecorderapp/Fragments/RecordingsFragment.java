@@ -80,18 +80,6 @@ public class RecordingsFragment extends Fragment implements OnSelectListener{
         return super.getDefaultViewModelCreationExtras();
     }
 
-    /*@Override
-    public void OnSelected(File file) {
-
-        Uri uri = FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName() + ".provider", file);
-        Intent intent = new Intent(Intent.ACTION_VIEW);
-        intent.setDataAndType(uri, "audio/x-wav");
-        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-        context.startActivity(intent);
-
-        /*FileDetailsDialogFragment dialogFragment = FileDetailsDialogFragment.newInstance(file);
-        dialogFragment.show(getChildFragmentManager(), "file_details_dialog");
-    } */
 
     @Override
     public void OnSelected(File file) {
