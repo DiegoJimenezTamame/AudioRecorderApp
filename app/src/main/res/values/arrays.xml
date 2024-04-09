@@ -39,4 +39,9 @@
         <item>AMR (Default)</item>
         <!-- Add more audio formats if needed -->
     </string-array>
+    <string-array name="presets_array">
+        <item>Preset 1</item>
+        <item>Preset 2</item>
+        <item>Preset 3</item>
+    </string-array>
 </resources>

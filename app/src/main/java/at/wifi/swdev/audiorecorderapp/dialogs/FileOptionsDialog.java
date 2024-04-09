@@ -1,4 +1,4 @@
-package at.wifi.swdev.audiorecorderapp;
+package at.wifi.swdev.audiorecorderapp.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -21,6 +21,8 @@ import com.chibde.visualizer.LineBarVisualizer;
 
 import java.io.File;
 import java.io.IOException;
+
+import at.wifi.swdev.audiorecorderapp.R;
 
 public class FileOptionsDialog extends Dialog {
 

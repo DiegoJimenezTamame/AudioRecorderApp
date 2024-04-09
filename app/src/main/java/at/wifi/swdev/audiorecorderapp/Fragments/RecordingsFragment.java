@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import at.wifi.swdev.audiorecorderapp.Adapters.RecAdapter;
-import at.wifi.swdev.audiorecorderapp.FileOptionsDialog;
+import at.wifi.swdev.audiorecorderapp.dialogs.FileOptionsDialog;
 import at.wifi.swdev.audiorecorderapp.Listeners.OnSelectListener;
 import at.wifi.swdev.audiorecorderapp.R;
 

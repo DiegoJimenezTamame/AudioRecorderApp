@@ -1,4 +1,4 @@
-package at.wifi.swdev.audiorecorderapp;
+package at.wifi.swdev.audiorecorderapp.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -19,6 +19,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import at.wifi.swdev.audiorecorderapp.Fragments.DrumpadFragment;
+import at.wifi.swdev.audiorecorderapp.R;
+import at.wifi.swdev.audiorecorderapp.dialogs.ColorSelectionDialog;
 
 public class EditSoundDialog extends DialogFragment {
 

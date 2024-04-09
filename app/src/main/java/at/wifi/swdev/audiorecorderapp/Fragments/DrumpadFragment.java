@@ -21,11 +21,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import at.wifi.swdev.audiorecorderapp.EditSoundDialog;
+import at.wifi.swdev.audiorecorderapp.dialogs.EditSoundDialog;
 import at.wifi.swdev.audiorecorderapp.R;
+import at.wifi.swdev.audiorecorderapp.dialogs.PresetsDialog;
 
 
-public class DrumpadFragment extends Fragment implements View.OnClickListener{
+public class DrumpadFragment extends Fragment implements View.OnClickListener, PresetsDialog.OnPresetSelectedListener {
 
         private SoundPool soundPool;
         private int[] soundIds = new int[12];
@@ -40,6 +41,19 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
         AudioAttributes attributes;
         AudioAttributes.Builder audioAttributesBuilder;
         private Map<Integer, Float> playbackSpeedMap = new HashMap<>();
+
+        private static final int[] presetSoundResources = {
+                R.raw.preset1_sound1, R.raw.preset1_sound2, R.raw.preset1_sound3, R.raw.preset1_sound4,
+                R.raw.preset1_sound5, R.raw.preset1_sound6, R.raw.preset1_sound7, R.raw.preset1_sound8,
+                R.raw.preset1_sound9, R.raw.preset1_sound10, R.raw.preset1_sound11, R.raw.preset1_sound12,
+                R.raw.preset2_sound1, R.raw.preset2_sound2, R.raw.preset2_sound3, R.raw.preset2_sound4,
+                R.raw.preset2_sound5, R.raw.preset2_sound6, R.raw.preset2_sound7, R.raw.preset2_sound8,
+                R.raw.preset2_sound9, R.raw.preset2_sound10, R.raw.preset2_sound11, R.raw.preset2_sound12,
+                R.raw.preset3_sound1, R.raw.preset3_sound2, R.raw.preset3_sound3, R.raw.preset3_sound4,
+                R.raw.preset3_sound5, R.raw.preset3_sound6, R.raw.preset3_sound7, R.raw.preset3_sound8,
+                R.raw.preset3_sound9, R.raw.preset3_sound10, R.raw.preset3_sound11, R.raw.preset3_sound12,
+        };
+
 
 
 
@@ -96,18 +110,18 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
                     .setAudioAttributes(audioAttributes)
                     .build();
 
-            soundIds[0] = soundPool.load(requireContext(), R.raw.sound1, 1);
-            soundIds[1] = soundPool.load(requireContext(), R.raw.sound2, 1);
-            soundIds[2] = soundPool.load(requireContext(), R.raw.sound3, 1);
-            soundIds[3] = soundPool.load(requireContext(), R.raw.sound4, 1);
-            soundIds[4] = soundPool.load(requireContext(), R.raw.sound5, 1);
-            soundIds[5] = soundPool.load(requireContext(), R.raw.sound6, 1);
-            soundIds[6] = soundPool.load(requireContext(), R.raw.sound7, 1);
-            soundIds[7] = soundPool.load(requireContext(), R.raw.sound8, 1);
-            soundIds[8] = soundPool.load(requireContext(), R.raw.sound9, 1);
-            soundIds[9] = soundPool.load(requireContext(), R.raw.sound10, 1);
-            soundIds[10] = soundPool.load(requireContext(), R.raw.sound11, 1);
-            soundIds[11] = soundPool.load(requireContext(), R.raw.sound12, 1);
+            soundIds[0] = soundPool.load(requireContext(), R.raw.preset1_sound1, 1);
+            soundIds[1] = soundPool.load(requireContext(), R.raw.preset1_sound2,  1);
+            soundIds[2] = soundPool.load(requireContext(), R.raw.preset1_sound3,  1);
+            soundIds[3] = soundPool.load(requireContext(), R.raw.preset1_sound4,  1);
+            soundIds[4] = soundPool.load(requireContext(), R.raw.preset1_sound5,  1);
+            soundIds[5] = soundPool.load(requireContext(), R.raw.preset1_sound6, 1);
+            soundIds[6] = soundPool.load(requireContext(), R.raw.preset1_sound7,  1);
+            soundIds[7] = soundPool.load(requireContext(), R.raw.preset1_sound8,  1);
+            soundIds[8] = soundPool.load(requireContext(), R.raw.preset1_sound9,  1);
+            soundIds[9] = soundPool.load(requireContext(), R.raw.preset1_sound10,  1);
+            soundIds[10] = soundPool.load(requireContext(), R.raw.preset1_sound11,  1);
+            soundIds[11] = soundPool.load(requireContext(), R.raw.preset1_sound12, 1);
         }
 
         private void setupButtonListeners(View view){
@@ -201,20 +215,20 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             boolean isEditing = (longClickedButtonIndex == soundIndex);
 
             // Adjust playback rate based on button's playback speed
-            float playbackRate = playbackSpeedMap.containsKey(soundIndex) ? playbackSpeedMap.get(soundIndex) : 1.0f;
+            Float playbackSpeed = playbackSpeedMap.get(soundIndex);
+            float adjustedPlaybackRate = (playbackSpeed != null) ? playbackSpeed : 1.0f;
 
             // If looping is enabled and the button is not being edited
             // play the sound continuously as long as the button is pressed
             if (isLoopingEnabled && !isEditing) {
                 // Start playing the sound with adjusted playback rate
-                soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, -1, playbackRate);
+                soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, -1, adjustedPlaybackRate);
             } else {
                 // Otherwise, play the sound once with adjusted playback rate
-                soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, 0, playbackRate);
+                soundPool.play(soundIds[soundIndex], 1.0f, 1.0f, 0, 0, adjustedPlaybackRate);
             }
         }
     }
-
     private void showOptionsDialog(int buttonIndex) {
         if (buttonIndex >= 0 && buttonIndex < loopingStates.length) {
             // Update longClickedButtonIndex when showing the dialog
@@ -236,16 +250,38 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
     }
 
     public void applyPlaybackSpeed() {
+        Log.d("DrumpadFragment", "Applying playback speed changes.");
         for (Map.Entry<Integer, Float> entry : playbackSpeedMap.entrySet()) {
             int buttonIndex = entry.getKey();
             float playbackSpeed = entry.getValue();
             if (soundPool != null) {
+                Log.d("DrumpadFragment", "Setting playback speed for sound at index " + buttonIndex + ": " + playbackSpeed);
                 soundPool.setRate(soundIds[buttonIndex], playbackSpeed);
             }
         }
     }
 
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        ImageButton btnPresets = view.findViewById(R.id.btnPresets);
+        btnPresets.setOnClickListener(v -> {
+            PresetsDialog dialogFragment = new PresetsDialog(soundPool);
+            dialogFragment.setTargetFragment(this, 0);
+            dialogFragment.show(getParentFragmentManager(), "PresetsDialog");
+        });
+    }
+    @Override
+    public void onPresetSelected(int presetIndex) {
+        // Load sounds for the selected preset
+        int startIndex = (presetIndex - 1) * 12; // Each preset has 12 sounds
+        for (int i = 0; i < 12; i++) {
+            int soundResourceId = presetSoundResources[startIndex + i];
+            soundIds[i] = soundPool.load(requireContext(), soundResourceId, 1); // Load sound into the corresponding index
+        }
+    }
 
     @Override
     public void onDestroy() {
@@ -273,6 +309,5 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             Log.e("DrumpadFragment", "Invalid buttonIndex: " + buttonIndex);
         }
     }
-
 }
 

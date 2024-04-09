@@ -1,4 +1,4 @@
-package at.wifi.swdev.audiorecorderapp;
+package at.wifi.swdev.audiorecorderapp.dialogs;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,6 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import at.wifi.swdev.audiorecorderapp.Adapters.CustomColorListAdapter;
+import at.wifi.swdev.audiorecorderapp.R;
 
 public class ColorSelectionDialog extends DialogFragment {
 

@@ -8,7 +8,7 @@
     android:background="@android:color/transparent">
     <ImageView
         android:id="@+id/imgRec"
-        android:src="@drawable/ic_recordings"
+        android:src="@drawable/ic_audio_file"
         android:layout_width="30dp"
         android:layout_height="30dp"
          android:layout_marginStart="8dp"

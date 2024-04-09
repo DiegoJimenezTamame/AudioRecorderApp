@@ -154,5 +154,16 @@
         </ImageButton>
     </LinearLayout>
 
+    <ImageButton
+        android:id="@+id/btnPresets"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:background="@color/redcolor"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:src="@drawable/ic_presets_menu"
+        android:contentDescription="@string/presets_button_description"/>
+
 
 </LinearLayout>
