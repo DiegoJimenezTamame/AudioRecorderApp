@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:textOn="@string/edit_enabled"
         android:textOff="@string/edit_disabled"
-        android:textSize="10sp"
+        android:textSize="11sp"
         android:textColor="#FFFFFF"
         android:checked="false"
         android:layout_gravity="start|top"
