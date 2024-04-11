@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/black">
+
+    <TextView
+        android:id="@+id/dialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Choose a sound"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:padding="16dp"
+        android:background="@color/black"/>
+
+    <ListView
+        android:id="@+id/list_view_sounds"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black"
+        android:divider="@color/white"
+        android:dividerHeight="1dp"/>
+
+</LinearLayout>

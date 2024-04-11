@@ -18,9 +18,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+
 import at.wifi.swdev.audiorecorderapp.Fragments.DrumpadFragment;
 import at.wifi.swdev.audiorecorderapp.R;
-import at.wifi.swdev.audiorecorderapp.dialogs.ColorSelectionDialog;
 
 public class EditSoundDialog extends DialogFragment {
 
@@ -43,8 +43,6 @@ public class EditSoundDialog extends DialogFragment {
 
     private Map<Integer, Float> playbackSpeedMap = new HashMap<>();
 
-
-
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
@@ -53,13 +51,13 @@ public class EditSoundDialog extends DialogFragment {
         dialogView = inflater.inflate(R.layout.dialog_edit_sound, null);
 
         // Find the toggle button for looping
-        ImageButton loopImageButton;
-        loopImageButton = dialogView.findViewById(R.id.loop_image_button);
+        ImageButton loopImageButton = dialogView.findViewById(R.id.loop_image_button);
         updateLoopingButtonState(loopImageButton);
         loopImageButton.setOnClickListener(v -> {
             // Toggle the state
             isLooping = !isLooping;
             updateLoopingButtonState(loopImageButton);
+            setLooping(isLooping);
         }); // Set initial state
 
         ImageButton playbackSpeedButton = dialogView.findViewById(R.id.playback_speed_button);
@@ -203,6 +201,8 @@ public class EditSoundDialog extends DialogFragment {
             // Apply changes to the behavior of the long-clicked button
             if (longClickedButtonIndex != -1) {
                 drumpadFragment.updateLooping(longClickedButtonIndex, isLooping);
+                // Apply playback speed changes
+                drumpadFragment.applyPlaybackSpeed(); // Add this line
                 // Also, update the ImageButton with any other changes (e.g., image resource)
             }
         }

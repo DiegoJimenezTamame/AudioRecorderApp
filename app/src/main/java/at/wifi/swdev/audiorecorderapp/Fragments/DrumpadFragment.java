@@ -11,28 +11,26 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ToggleButton;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.viewmodel.CreationExtras;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-
 import at.wifi.swdev.audiorecorderapp.dialogs.EditSoundDialog;
 import at.wifi.swdev.audiorecorderapp.R;
 import at.wifi.swdev.audiorecorderapp.dialogs.PresetsDialog;
 
 
-public class DrumpadFragment extends Fragment implements View.OnClickListener{
+public class DrumpadFragment extends Fragment implements View.OnClickListener, PresetsDialog.PresetSelectionListener {
 
         private SoundPool soundPool;
         private int[] soundIds = new int[12];
         private int longClickedButtonIndex = -1; // Initialize with an invalid index
         private ImageButton[] buttons = new ImageButton[12];
-        private boolean[] loopingStates = new boolean[12];
+        private final boolean[] loopingStates = new boolean[12];
         private int currentButtonIndex = 0; // Default value
         private ToggleButton toggleButton;
         private Map<Integer, Float> playbackSpeedMap = new HashMap<>();
@@ -48,9 +46,6 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
                 R.raw.preset3_sound5, R.raw.preset3_sound6, R.raw.preset3_sound7, R.raw.preset3_sound8,
                 R.raw.preset3_sound9, R.raw.preset3_sound10, R.raw.preset3_sound11, R.raw.preset3_sound12,
         };
-
-
-
 
         @Nullable
         @Override
@@ -69,9 +64,36 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener{
             // Set up toggle button for long click listeners
             setupToggleButton(view);
 
+            ImageButton btnPresets = view.findViewById(R.id.btnPresets);
+            btnPresets.setOnClickListener(v -> showPresetDialog());
+
 
             return view;
         }
+
+
+    private void showPresetDialog() {
+        FragmentManager fragmentManager = getChildFragmentManager();
+        PresetsDialog presetDialog = new PresetsDialog();
+        presetDialog.setPresetSelectionListener(this); // Set the listener
+        presetDialog.show(fragmentManager, "PresetDialog");
+    }
+
+    @Override
+    public void onPresetSelected(int presetIndex) {
+        loadPresetSounds(presetIndex);
+    }
+    private void loadPresetSounds(int presetIndex) {
+        int startIndex = presetIndex * 12; // Each preset has 12 sounds
+        for (int i = 0; i < 12; i++) {
+            loadSoundResource(presetSoundResources[startIndex + i], i);
+        }
+    }
+
+    private void loadSoundResource(int soundResource, int buttonIndex) {
+        String resourcePath = "android.resource://" + requireContext().getPackageName() + "/" + soundResource;
+        loadSound(resourcePath, buttonIndex);
+    }
 
     public void loadSound(String filePath, int buttonIndex) {
         if (soundPool == null) {
