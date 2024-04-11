@@ -26,20 +26,15 @@ import at.wifi.swdev.audiorecorderapp.R;
 import at.wifi.swdev.audiorecorderapp.dialogs.PresetsDialog;
 
 
-public class DrumpadFragment extends Fragment implements View.OnClickListener, PresetsDialog.OnPresetSelectedListener {
+public class DrumpadFragment extends Fragment implements View.OnClickListener{
 
         private SoundPool soundPool;
         private int[] soundIds = new int[12];
         private int longClickedButtonIndex = -1; // Initialize with an invalid index
-        private SoundPool.Builder soundPoolBuilder;
-        private boolean defaultSoundsLoaded = false;
         private ImageButton[] buttons = new ImageButton[12];
         private boolean[] loopingStates = new boolean[12];
-        private int buttonIndex = 0; // Default value
         private int currentButtonIndex = 0; // Default value
         private ToggleButton toggleButton;
-        AudioAttributes attributes;
-        AudioAttributes.Builder audioAttributesBuilder;
         private Map<Integer, Float> playbackSpeedMap = new HashMap<>();
 
         private static final int[] presetSoundResources = {
@@ -245,9 +240,6 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
     public void updateLooping(int buttonIndex, boolean isLooping) {
         loopingStates[buttonIndex] = isLooping;
     }
-    public int getCurrentButtonIndex(){
-            return currentButtonIndex;
-    }
 
     public void applyPlaybackSpeed() {
         Log.d("DrumpadFragment", "Applying playback speed changes.");
@@ -263,30 +255,9 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
 
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
-        ImageButton btnPresets = view.findViewById(R.id.btnPresets);
-        btnPresets.setOnClickListener(v -> {
-            PresetsDialog dialogFragment = new PresetsDialog(soundPool);
-            dialogFragment.setTargetFragment(this, 0);
-            dialogFragment.show(getParentFragmentManager(), "PresetsDialog");
-        });
-    }
-    @Override
-    public void onPresetSelected(int presetIndex) {
-        // Load sounds for the selected preset
-        int startIndex = (presetIndex - 1) * 12; // Each preset has 12 sounds
-        for (int i = 0; i < 12; i++) {
-            int soundResourceId = presetSoundResources[startIndex + i];
-            soundIds[i] = soundPool.load(requireContext(), soundResourceId, 1); // Load sound into the corresponding index
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        // Release SoundPool when the fragment is destroyed
+    public void onDestroyView() {
+        super.onDestroyView();
+        // Release SoundPool when the fragment's view is destroyed
         soundPool.release();
     }
 

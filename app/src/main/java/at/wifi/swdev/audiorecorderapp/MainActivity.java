@@ -12,6 +12,7 @@ import at.wifi.swdev.audiorecorderapp.Adapters.ViewPagerAdapter;
 import at.wifi.swdev.audiorecorderapp.Fragments.DrumpadFragment;
 import at.wifi.swdev.audiorecorderapp.Fragments.RecorderFragment;
 import at.wifi.swdev.audiorecorderapp.Fragments.RecordingsFragment;
+import at.wifi.swdev.audiorecorderapp.dialogs.PresetsDialog;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,4 +44,5 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(viewPagerAdapter);
 
     }
+
 }
