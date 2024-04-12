@@ -6,7 +6,6 @@
     android:background="@color/black"
     android:textColor="@android:color/white">
 
-    <!-- ImageView for the circle icon -->
     <ImageView
         android:id="@+id/circleImageView"
         android:layout_width="16dp"
@@ -18,7 +17,6 @@
         android:visibility="gone"
         tools:ignore="MissingConstraints" />
 
-    <!-- TextView to display the list item text -->
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"

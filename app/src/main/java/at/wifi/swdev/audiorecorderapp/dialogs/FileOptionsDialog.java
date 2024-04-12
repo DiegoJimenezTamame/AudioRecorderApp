@@ -64,8 +64,8 @@ public class FileOptionsDialog extends Dialog {
                 mediaPlayer.start();
                 playButton.setImageResource(R.drawable.pause_button_icon);
                 lineBarVisualizer.setVisibility(View.VISIBLE);
-                lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.blueendcolor)); // Set color as per your requirement
-                lineBarVisualizer.setDensity(60); // Set density as per your requirement
+                lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.blueendcolor));
+                lineBarVisualizer.setDensity(60);
             }
             isPlaying = !isPlaying;
         });
@@ -99,7 +99,6 @@ public class FileOptionsDialog extends Dialog {
 
         ImageButton renameButton = findViewById(R.id.rename_button);
         renameButton.setOnClickListener(v -> {
-            // Implement file renaming functionality here
             AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.CustomAlertDialogStyle);
             builder.setTitle("Rename File");
             // Set Up the Input
@@ -122,15 +121,12 @@ public class FileOptionsDialog extends Dialog {
 
         ImageButton trimButton = findViewById(R.id.trim_button);
         trimButton.setOnClickListener(v -> {
-            // Implement file trimming functionality here
             // TODO: IMPLEMENT TRIM LOGIC HERE
             dismiss();
         });
 
         ImageButton shareButton = findViewById(R.id.share_button);
-        shareButton.setOnClickListener(v -> {
-            shareFile(selectedFile);
-        });
+        shareButton.setOnClickListener(v -> shareFile(selectedFile));
     }
 
     private void deleteFile(File file) {
@@ -145,12 +141,10 @@ public class FileOptionsDialog extends Dialog {
             boolean renamed = file.renameTo(newFile);
             if (renamed){
                 // File Renamed successfully
-                selectedFile = newFile; // Update selectedFile reference if necessary
-                // Update any UI elements or references
+                selectedFile = newFile; // Update selectedFile reference
                 Toast.makeText(getContext(), "Done", Toast.LENGTH_SHORT).show();
             } else {
                 // Failed to rename file
-                // Handle error or show a message to the user
                 Toast.makeText(getContext(), "Renaming failed", Toast.LENGTH_SHORT).show();
             }
         }

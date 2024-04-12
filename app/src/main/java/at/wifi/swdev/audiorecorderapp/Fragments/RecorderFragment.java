@@ -3,14 +3,12 @@ package at.wifi.swdev.audiorecorderapp.Fragments;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,20 +25,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 
 import at.wifi.swdev.audiorecorderapp.Adapters.AudioFormatListAdapter;
 import at.wifi.swdev.audiorecorderapp.R;
-
 import androidx.core.content.ContextCompat;
-
-//importing required classes
 import com.bumptech.glide.Glide;
 import com.chibde.visualizer.LineBarVisualizer;
 
@@ -111,8 +105,8 @@ public class RecorderFragment extends Fragment {
 
                     // Start visualization
                     lineBarVisualizer.setVisibility(View.VISIBLE);
-                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.teal_200)); // Set color as per your requirement
-                    lineBarVisualizer.setDensity(70); // Set density as per your requirement
+                    lineBarVisualizer.setColor(ContextCompat.getColor(requireContext(), R.color.teal_200));
+                    lineBarVisualizer.setDensity(70);
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(getContext(), "Recording failed", Toast.LENGTH_SHORT).show();
@@ -145,8 +139,8 @@ public class RecorderFragment extends Fragment {
                     // Start visualization
                     lineBarVisualizer.setPlayer(mediaPlayer.getAudioSessionId());
                     lineBarVisualizer.setVisibility(View.VISIBLE);
-                    lineBarVisualizer.setColor(ContextCompat.getColor(getContext(), R.color.blueendcolor));// Set color as per your requirement
-                    lineBarVisualizer.setDensity(70); // Set density as per your requirement
+                    lineBarVisualizer.setColor(ContextCompat.getColor(requireContext(), R.color.blueendcolor));
+                    lineBarVisualizer.setDensity(70);
 
                     // Start chronometer
                     timeRec.setBase(SystemClock.elapsedRealtime());
@@ -156,14 +150,11 @@ public class RecorderFragment extends Fragment {
                     mediaPlayer.setOnCompletionListener(mp -> {
                         // Change icon back to play icon
                         btnPlay.setImageResource(R.drawable.play_button_icon);
-
                         // Stop visualization
                         lineBarVisualizer.setVisibility(View.GONE);
-
                         // Stop chronometer
                         timeRec.stop();
-
-                        // Release MediaPlayer resources
+                        // Release MediaPlayer
                         mediaPlayer.release();
                         mediaPlayer = null;
                     });
@@ -178,10 +169,8 @@ public class RecorderFragment extends Fragment {
                     // Change icon to Play
                     btnPlay.setImageResource(R.drawable.play_button_icon);
                     Toast.makeText(getContext(), "Playback paused", Toast.LENGTH_SHORT).show();
-
                     // Stop visualization
                     lineBarVisualizer.setVisibility(View.GONE);
-
                     // Stop chronometer
                     timeRec.stop();
                 } else {
@@ -190,10 +179,8 @@ public class RecorderFragment extends Fragment {
                     // Change icon to Pause
                     btnPlay.setImageResource(R.drawable.pause_button_icon);
                     Toast.makeText(getContext(), "Playback resumed", Toast.LENGTH_SHORT).show();
-
                     // Start visualization
                     lineBarVisualizer.setVisibility(View.VISIBLE);
-
                     // Resume chronometer
                     timeRec.start();
                 }
@@ -204,17 +191,15 @@ public class RecorderFragment extends Fragment {
     }
 
     private void askRuntimePermissions() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            boolean allPermissionsGranted = true;
-            for (String permission : PERMISSIONS) {
-                if (ActivityCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
-                    allPermissionsGranted = false;
-                    break;
-                }
+        boolean allPermissionsGranted = true;
+        for (String permission : PERMISSIONS) {
+            if (ActivityCompat.checkSelfPermission(requireContext(), permission) != PackageManager.PERMISSION_GRANTED) {
+                allPermissionsGranted = false;
+                break;
             }
-            if (!allPermissionsGranted) {
-                requestPermissions(PERMISSIONS, REQUEST_PERMISSION_CODE);
-            }
+        }
+        if (!allPermissionsGranted) {
+            requestPermissions(PERMISSIONS, REQUEST_PERMISSION_CODE);
         }
     }
 
@@ -245,7 +230,7 @@ public class RecorderFragment extends Fragment {
                 R.drawable.threegp_format,
                 R.drawable.ogg_format,
                 R.drawable.amr_format,
-        }; // Add icons as needed
+        };
 
         AudioFormatListAdapter adapter = new AudioFormatListAdapter(requireContext(), audioFormats, icons);
 
@@ -254,7 +239,7 @@ public class RecorderFragment extends Fragment {
                             // The 'which' argument contains the index position
                             // of the selected item
                             String selectedFormat = audioFormats[which];
-                            updateFileName(selectedFormat); // Call updateFileName to update the file name
+                            updateFileName(selectedFormat); // Update the file name
                             startRecording(selectedFormat);
                         })
                 .setNegativeButton("Cancel", (dialog, id) -> dialog.dismiss());

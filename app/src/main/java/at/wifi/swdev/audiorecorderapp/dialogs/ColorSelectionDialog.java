@@ -19,7 +19,7 @@ import at.wifi.swdev.audiorecorderapp.R;
 
 public class ColorSelectionDialog extends DialogFragment {
 
-    private OnColorSelectedListener mListener; // Declare mListener variable
+    private OnColorSelectedListener mListener;
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {

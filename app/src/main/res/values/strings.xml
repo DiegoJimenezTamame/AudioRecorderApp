@@ -10,7 +10,7 @@
     <string name="looping">Looping</string>
     <string name="edit">Edit</string>
     <string name="loop">Loop</string>
-    <string name="recordinglive">Recording...</string>
+    <string name="recordinglive">Recording</string>
     <string name="edit_enabled">Edit enabled</string>
     <string name="edit_disabled">Edit disabled</string>
     <string name="change_button_color">Change button color</string>
@@ -19,4 +19,8 @@
     <string name="unlock">Unlock</string>
     <string name="audio_format">Audio Format</string>
     <string name="presets_button_description" />
+    <string name="share" />
+    <string name="toggle_button_for_enabling_editing">Toggle button for enabling editing</string>
+    <string name="playback_speed">Playback Speed</string>
+    <string name="play_button_description">Play</string>
 </resources>

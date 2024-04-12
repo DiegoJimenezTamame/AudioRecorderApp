@@ -34,7 +34,6 @@ public class MainActivity extends AppCompatActivity{
         tabLayout.setupWithViewPager(viewPager);
 
     }
-
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new RecorderFragment(), "Recorder");
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity{
         viewPager.setAdapter(viewPagerAdapter);
 
     }
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
         super.onPointerCaptureChanged(hasCapture);

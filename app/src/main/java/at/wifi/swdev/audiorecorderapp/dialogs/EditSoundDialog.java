@@ -164,7 +164,7 @@ public class EditSoundDialog extends DialogFragment {
         playbackSpeedSlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                // Adjust the playback speed based on the progress
+                // Adjust the playback speed
                 float speed = (float) progress / 100;
                 // Update the playback speed for the specific button
                 playbackSpeedMap.put(buttonIndex, speed);
@@ -202,8 +202,7 @@ public class EditSoundDialog extends DialogFragment {
             if (longClickedButtonIndex != -1) {
                 drumpadFragment.updateLooping(longClickedButtonIndex, isLooping);
                 // Apply playback speed changes
-                drumpadFragment.applyPlaybackSpeed(); // Add this line
-                // Also, update the ImageButton with any other changes (e.g., image resource)
+                drumpadFragment.applyPlaybackSpeed();
             }
         }
     }

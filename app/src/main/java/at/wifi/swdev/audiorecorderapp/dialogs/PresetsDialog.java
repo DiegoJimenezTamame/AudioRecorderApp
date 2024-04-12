@@ -46,7 +46,6 @@ public class PresetsDialog extends DialogFragment {
         presetListView.setAdapter(adapter);
 
         presetListView.setOnItemClickListener((parent, view1, position, id) -> {
-            // Notify the listener with the selected preset index
             if (listener != null) {
                 listener.onPresetSelected(position);
             }

@@ -29,22 +29,19 @@ public class RecordingsFragment extends Fragment implements OnSelectListener{
     private RecAdapter recAdapter;
 
     private Context context;
-    private File path; // Moved declaration here
-
+    private File path;
     View view;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_recordings, container, false);
-
         // Initialize context
         context = getContext();
         // Initialize path
         if (context != null) {
             path = new File(context.getFilesDir(), "/AudioRecorderApp");
         }
-
         displayFiles();
         return  view;
     }

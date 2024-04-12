@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- dialog_options.xml -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -7,7 +6,6 @@
     android:background="@android:color/background_dark"
     android:padding="16dp">
 
-    <!-- Toggle button for looping -->
     <ImageButton
         android:id="@+id/loop_image_button"
         android:layout_width="48dp"
@@ -27,7 +25,7 @@
         android:background="@color/purpleendcolor"
         android:padding="8dp"
         android:checked="false"
-        android:contentDescription="Playback Speed"
+        android:contentDescription="@string/playback_speed"
         style="@style/DialogButtonStyle"/>
 
     <ImageButton
@@ -50,6 +48,5 @@
         android:contentDescription="@string/load_sound"
         style="@style/DialogButtonStyle"/>
 
-    <!-- Add other UI elements here for trimming, loading file, playback direction, etc. -->
 
 </LinearLayout>

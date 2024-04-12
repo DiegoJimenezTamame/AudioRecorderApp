@@ -45,13 +45,10 @@ public class WaveformVisualizerView extends View {
     private void setupVisualizer() {
         if (mediaPlayer != null) {
             visualizer = new Visualizer(mediaPlayer.getAudioSessionId());
-
             // Set capture size to a relatively large value for better resolution
             visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
-
             // Set scaling mode to capture higher range of amplitudes
             visualizer.setScalingMode(Visualizer.SCALING_MODE_NORMALIZED);
-
             // Set smoothing to get smoother waveform visualization
             visualizer.setScalingMode(Visualizer.SCALING_MODE_AS_PLAYED);
             visualizer.setDataCaptureListener(new Visualizer.OnDataCaptureListener() {

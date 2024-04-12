@@ -28,10 +28,10 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
 
         private SoundPool soundPool;
         private int[] soundIds = new int[12];
-        private int longClickedButtonIndex = -1; // Initialize with an invalid index
+        private int longClickedButtonIndex = -1;
         private ImageButton[] buttons = new ImageButton[12];
         private final boolean[] loopingStates = new boolean[12];
-        private int currentButtonIndex = 0; // Default value
+        private int currentButtonIndex = 0;
         private ToggleButton toggleButton;
         private Map<Integer, Float> playbackSpeedMap = new HashMap<>();
 
@@ -75,7 +75,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
     private void showPresetDialog() {
         FragmentManager fragmentManager = getChildFragmentManager();
         PresetsDialog presetDialog = new PresetsDialog();
-        presetDialog.setPresetSelectionListener(this); // Set the listener
+        presetDialog.setPresetSelectionListener(this);
         presetDialog.show(fragmentManager, "PresetDialog");
     }
 
@@ -84,7 +84,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
         loadPresetSounds(presetIndex);
     }
     private void loadPresetSounds(int presetIndex) {
-        int startIndex = presetIndex * 12; // Each preset has 12 sounds
+        int startIndex = presetIndex * 12;
         for (int i = 0; i < 12; i++) {
             loadSoundResource(presetSoundResources[startIndex + i], i);
         }
@@ -198,7 +198,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
         toggleButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 // Enable long click listeners
-                setupButtonLongClickListeners(); // Call the method directly
+                setupButtonLongClickListeners();
             } else {
                 // Disable long click listeners
                 removeToggleLongClickListeners();
@@ -234,7 +234,6 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
             // Adjust playback rate based on button's playback speed
             Float playbackSpeed = playbackSpeedMap.get(soundIndex);
             float adjustedPlaybackRate = (playbackSpeed != null) ? playbackSpeed : 1.0f;
-
             // If looping is enabled and the button is not being edited
             // play the sound continuously as long as the button is pressed
             if (isLoopingEnabled && !isEditing) {
@@ -248,11 +247,11 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
     }
     private void showOptionsDialog(int buttonIndex) {
         if (buttonIndex >= 0 && buttonIndex < loopingStates.length) {
-            // Update longClickedButtonIndex when showing the dialog
+            // Update longClickedButtonIndex
             longClickedButtonIndex = buttonIndex;
             EditSoundDialog dialog = new EditSoundDialog();
             dialog.setLongClickedButtonIndex(buttonIndex);
-            dialog.setButtonIndex(buttonIndex); // Pass the index of the button
+            dialog.setButtonIndex(buttonIndex);
             dialog.show(getChildFragmentManager(), "EditSoundDialog");
         } else {
             Log.e("DrumpadFragment", "Invalid buttonIndex: " + buttonIndex);
@@ -279,7 +278,7 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Release SoundPool when the fragment's view is destroyed
+        // Release SoundPool
         soundPool.release();
     }
 
@@ -294,7 +293,6 @@ public class DrumpadFragment extends Fragment implements View.OnClickListener, P
         return super.getDefaultViewModelCreationExtras();
     }
 
-    // Add a method to update the image resource of the button
     public void updateButtonImage(int buttonIndex, int drawableResId) {
         if (buttonIndex >= 0 && buttonIndex < buttons.length) {
             buttons[buttonIndex].setImageResource(drawableResId);
