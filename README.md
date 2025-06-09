@@ -31,8 +31,8 @@ Microphone access permission
 Storage permission (for saving recordings)
 
 📸 Screenshots
-![Recording Screen](https://github.com/DiegoJimenezTamame/AudioRecorderApp/screenshots/Recorder.jpeg)
-![Audio Playback](https://github.com/DiegoJimenezTamame/AudioRecorderApp/screenshots/Playback.jpeg)
-![Files](https://github.com/DiegoJimenezTamame/AudioRecorderApp/screenshots/Files.jpeg)
-![Drumpad](https://github.com/DiegoJimenezTamame/AudioRecorderApp/screenshots/Drumpad.jpeg)
+![Recording Screen](screenshots/Recorder.jpeg)
+![Audio Playback](screenshots/Playback.jpeg)
+![Files](screenshots/Files.jpeg)
+![Drumpad](screenshots/Drumpad.jpeg)
 
