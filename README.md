@@ -39,10 +39,3 @@ Drumpad Playback
 
 Replace the paths above with the actual paths where you store your screenshots in the repo.
 
-📄 License
-This project is licensed under the MIT License.
-
-👤 Author
-Diego Jiménez Tamame
-GitHub Profile
-
