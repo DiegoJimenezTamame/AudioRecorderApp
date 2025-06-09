@@ -32,9 +32,9 @@ Storage permission (for saving recordings)
 
 📸 Screenshots
 <p float="left"> 
-  <img src="screenshots/Recorder.jpeg" width="300"/> 
-  <img src="screenshots/Playback.jpeg" width="300"/>
-  <img src="screenshots/Files.jpeg" width="300"/> 
-  <img src="screenshots/Drumpad.jpeg" width="300"/> 
+  <img src="screenshots/Recorder.jpeg" width="200"/> 
+  <img src="screenshots/Playback.jpeg" width="200"/>
+  <img src="screenshots/Files.jpeg" width="200"/> 
+  <img src="screenshots/Drumpad.jpeg" width="200"/> 
 </p> ```
 
