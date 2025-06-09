@@ -31,8 +31,10 @@ Microphone access permission
 Storage permission (for saving recordings)
 
 📸 Screenshots
-![Recording Screen](screenshots/Recorder.jpeg)
-![Audio Playback](screenshots/Playback.jpeg)
-![Files](screenshots/Files.jpeg)
-![Drumpad](screenshots/Drumpad.jpeg)
+<p float="left"> 
+  <img src="screenshots/Recorder.jpeg" width="300"/> 
+  <img src="screenshots/Playback.jpeg" width="300"/>
+  <img src="screenshots/Files.jpeg" width="300"/> 
+  <img src="screenshots/Drumpad.jpeg" width="300"/> 
+</p> ```
 
