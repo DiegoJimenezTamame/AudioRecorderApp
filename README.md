@@ -36,5 +36,5 @@ Storage permission (for saving recordings)
   <img src="screenshots/Playback.jpeg" width="200"/>
   <img src="screenshots/Files.jpeg" width="200"/> 
   <img src="screenshots/Drumpad.jpeg" width="200"/> 
-</p> ```
+</p>
 
