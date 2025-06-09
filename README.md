@@ -1,7 +1,6 @@
 🎵 AudioRecorderApp
-AudioRecorderApp is an Android application that allows users to record, edit, and play audio samples using a built-in drumpad. It turns your phone into a basic portable audio workstation and music instrument.
+AudioRecorderApp is an Android application that allows users to record, edit, and play audio samples using a built-in drumpad.
 
-✨ Features
 🎙️ Record high-quality audio from your microphone
 
 ✂️ Trim and edit recordings directly in the app
