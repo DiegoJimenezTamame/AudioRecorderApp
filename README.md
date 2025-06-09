@@ -31,11 +31,8 @@ Microphone access permission
 Storage permission (for saving recordings)
 
 📸 Screenshots
-Recording Interface
-
-Audio Editor
-
-Drumpad Playback
-
-Replace the paths above with the actual paths where you store your screenshots in the repo.
+![Recording Screen](https://github.com/DiegoJimenezTamame/AudioRecorderApp/raw/main/screenshots/Recorder.jpeg)
+![Audio Playback](https://github.com/DiegoJimenezTamame/AudioRecorderApp/raw/main/screenshots/Playback.jpeg)
+![Files](https://github.com/DiegoJimenezTamame/AudioRecorderApp/raw/main/screenshots/Files.jpeg)
+![Drumpad](https://github.com/DiegoJimenezTamame/AudioRecorderApp/raw/main/screenshots/Drumpad.jpeg)
 
