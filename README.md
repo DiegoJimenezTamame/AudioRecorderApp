@@ -12,8 +12,8 @@ AudioRecorderApp is an Android application that allows users to record, edit, an
 💾 Save and reuse your custom audio samples
 
 🚀 Getting Started
-Clone the repo:
 
+Clone the repo:
 bash
 Copy
 Edit
