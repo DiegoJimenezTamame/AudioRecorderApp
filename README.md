@@ -1,4 +1,8 @@
-# 🔊 AudioRecorderApp
+# <p float="left"> 
+  <img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher.png" width="150"/> 
+</p>  
+
+AudioRecorderApp
 
 **AudioRecorderApp** is an Android application written in Java that lets users record, play, manage, and share audio recordings — and even **play them as musical samples** using a built-in **Drumpad** feature. Whether you're capturing voice notes or experimenting with sounds, this app bridges the gap between recording utility and creative expression.
 
